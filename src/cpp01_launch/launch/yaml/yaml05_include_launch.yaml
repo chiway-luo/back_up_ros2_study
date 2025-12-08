@@ -1,0 +1,13 @@
+launch:
+- let:
+    name: rgb_r
+    value: "255"
+- let:
+    name: "rgb_g"
+    value: "0"
+- let:
+    name: rgb_b
+    value: "0"
+- include:
+    file: "$(find-pkg-share cpp01_launch)/launch/yaml/yaml04_args_launch.yaml"
+

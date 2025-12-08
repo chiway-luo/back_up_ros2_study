@@ -1,0 +1,22 @@
+required arguments:
+  --frame-id FRAME_ID parent frame
+  --child-frame-id CHILD_FRAME_ID child frame id
+
+optional arguments:
+  --x X                 x component of translation
+  --y Y                 y component of translation
+  --z Z                 z component of translation
+  --qx QX               x component of quaternion rotation
+  --qy QY               y component of quaternion rotation
+  --qz QZ               z component of quaternion rotation
+  --qw QW               w component of quaternion rotation
+  --roll ROLL           roll component Euler rotation   沿着X轴旋转
+  --pitch PITCH         pitch component Euler rotation 沿着Y轴旋转
+  --yaw YAW             yaw component Euler rotation  沿着Z轴旋转
+
+
+ros2 run tf2_ros static_transform_publisher --frame-id base_link --child-frame-id laser --x 1 --z 2 --yaw 0.5
+
+案例 
+ros2 run tf2_ros static_transform_publisher --frame-id base_link --child-frame-id laser --x 0.4 --z 0.2 
+ros2 run tf2_ros static_transform_publisher --frame-id base_link --child-frame-id camera --x -0.5 --z 0.4

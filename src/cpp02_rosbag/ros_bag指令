@@ -1,0 +1,6 @@
+cd 指定目录
+启动节点
+ros2 bag record 订阅话题 --output 指定文件夹
+ros2 bag play 指定文件夹  回放录制的bag文件
+
+ros2 bag info 指定文件夹 查看bag文件信息

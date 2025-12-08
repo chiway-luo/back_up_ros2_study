@@ -1,0 +1,20 @@
+launch:
+- group:
+    - push-ros-namespace: 
+        namespace: "sdy_namespace1"
+    - node:
+        pkg: "turtlesim"
+        exec: "turtlesim_node"
+        name: "sdy_turtle1"
+    - node:
+        pkg: "turtlesim"
+        exec: "turtlesim_node"
+        name: "sdy_turtle2"
+- group:
+    - push-ros-namespace: 
+        namespace: "sdy_namespace2"
+    - node:
+        pkg: "turtlesim"
+        exec: "turtlesim_node"
+        name: "sdy_turtle"
+    

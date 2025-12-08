@@ -1,0 +1,29 @@
+launch:
+#声明参数
+- arg:
+    name: "rgb_r"
+    default: "0"
+- arg:
+    name: "rgb_g"
+    default: "255"
+- arg:
+    name: "rgb_b"
+    default: "0"
+#调用参数
+- node:
+    pkg: "turtlesim"
+    exec: "turtlesim_node"
+    namespace: "namespace_sdy1"
+    param:
+    -
+      name: "background_r"
+      value: "$(var rgb_r)"
+    -
+      name: "background_g"
+      value: "$(var rgb_g)"
+    - 
+      name: "background_b"
+      value: "$(var rgb_b)"
+
+#通过执行launch导入参数
+# ros2 launch cpp01_launch yaml04_args_launch.yaml rgb_r:=200 rgb_g:=100 rgb_b:=50

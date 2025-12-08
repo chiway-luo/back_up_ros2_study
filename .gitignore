@@ -1,0 +1,10 @@
+build/
+install/
+log/
+.colcon/
+.vscode/
+__pycache__/
+*.pyc
+*.db3
+*.bag
+*.bag.active
