@@ -8,3 +8,4 @@ __pycache__/
 *.db3
 *.bag
 *.bag.active
+.backup
