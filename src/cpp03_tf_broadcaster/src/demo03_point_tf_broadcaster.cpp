@@ -3,7 +3,7 @@
 
 
 /*
-    需求:发布一个坐标点消息,相对于laser坐标系,坐标点为(2.0,3.0,5.0)
+    需求:发布一个坐标点消息,相对于laser坐标系,做圆周运动
     流程:
         1.包含头文件
         2.初始化ros2客户端
@@ -70,7 +70,7 @@ int main(int argc, char * argv[])
     rclcpp::init(argc,argv);
 
     //调用spin函数,使用自定义类对象指针
-    rclcpp::spin(std::make_shared<TfPoint>("node_name","namespace"));
+    rclcpp::spin(std::make_shared<TfPoint>("node_name","active_point"));
 
     //释放资源
     rclcpp::shutdown();
