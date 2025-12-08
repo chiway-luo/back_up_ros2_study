@@ -1,0 +1,10 @@
+1.名称重映射,为节点起别名
+2.命名空间 /xxx/yyy/zzz
+
+ros2 run turtlesim turtlesim_node
+ros2 run turtlesim turtlesim_node --ros-args --remap __ns:=/sdy  设置命名空间
+
+ros2 run turtlesim turtlesim_node --ros-args --remap __name:=turtlesim2  设置节点名称方法一
+ros2 run turtlesim turtlesim_node --ros-args --remap __node:=turtlesim2  设置节点名称方法二
+
+ros2 run turtlesim turtlesim_node --ros-args --remap __ns:=/sdy1 --remap __name:=turtlesim2  设置命名空间和节点名称

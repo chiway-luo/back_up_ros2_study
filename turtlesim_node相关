@@ -1,0 +1,27 @@
+parameters
+/turtlesim:
+  background_b
+  background_g
+  background_r
+
+topics
+/turtle1/cmd_vel
+/turtle1/color_sensor
+/turtle1/pose
+
+services
+chiway@chiway-ros2-humble:~$ ros2 service list 
+/clear
+/kill
+/reset
+/spawn 下崽
+/turtle1/set_pen
+/turtle1/teleport_absolute 
+/turtle1/teleport_relative 
+/turtlesim/describe_parameters 
+/turtlesim/get_parameter_types 
+/turtlesim/get_parameters
+/turtlesim/list_parameters 
+/turtlesim/set_parameters 
+/turtlesim/set_parameters_atomically
+chiway@chiway-ros2-humble:~$ 

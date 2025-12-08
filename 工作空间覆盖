@@ -1,0 +1,3 @@
+查看当前终端的工作空间覆盖情况，可以使用以下命令：
+echo $AMENT_PREFIX_PATH 这是cpp的工作空间覆盖情况。
+echo $PYHTONPATH  这是python的工作空间覆盖情况。

@@ -1,0 +1,53 @@
+新建工作空间
+cd stu_ros2/
+mkdir -p 工作空间/src
+cd 工作空间
+colcon build #编译
+
+创建功能包
+ros2 pkg create 功能包 --build-type ament_cmake --dependencies rclcpp --node-name 映射包名
+ros2 pkg create pkg01_helloworld_cpp --build-type ament_cmake --dependencies rclcpp --node-name helloworld
+新建功能包语法如下：
+ros2 pkg create 包名 --build-type 构建类型 --dependencies 依赖列表 --node-name 可执行程序名称
+格式解释：
+--build-type：是指功能包的构建类型，有cmake、ament_cmake、ament_python三种类型可选；
+--dependencies：所依赖的功能包列表；
+--node-name：可执行程序的名称，会自动生成对应的源文件并生成配置文件。
+
+编译 colcon build --packages-select pkg01_helloworld_cpp #仅编译指定包
+
+运行
+刷新环境变量 . install/setup.bash
+. install/local_setup.bash #添加了系统环境变量后想要刷新当前工作空间只能使用这一条
+ros2 run pkg01_helloworld_cpp helloworld   包名 程序名
+
+
+
+
+
+ |-- C++功能包
+            |-- package.xml：包信息，比如:包名、版本、作者、依赖项。
+            |-- CMakeLists.txt：配置编译规则，比如源文件、依赖项、目标文件。
+            |-- src：C++源文件目录。
+            |-- include：头文件目录。
+            |-- msg：消息接口文件目录。
+            |-- srv：服务接口文件目录。
+            |-- action：动作接口文件目录。
+
+ |-- Python功能包
+            |-- package.xml：包信息，比如:包名、版本、作者、依赖项。
+            |-- setup.py：与C++功能包的CMakeLists.txt类似。
+            |-- setup.cfg：功能包基本配置文件。
+            |-- resource：资源目录。
+            |-- test：存储测试相关文件。
+            |-- 功能包同名目录：Python源文件目录。
+
+自定义文件夹
+|-- C++或Python功能包
+    |-- launch：存储launch文件。
+    |-- rviz：存储rviz2配置相关文件。
+    |-- urdf：存储机器人建模文件。
+    |-- params：存储参数文件。
+    |-- world：存储仿真环境相关文件。
+    |-- map：存储导航所需地图文件。
+    |-- ......

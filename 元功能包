@@ -1,0 +1,14 @@
+完成一个系统功能可能涉及多个功能包,ros2提供了一种方式可以将多个功能包打包成一个功能包
+当安装某个模块时,直接调用打包后的功能包即可,该包又称为元功能包(meta package)
+
+
+ros2 pkg create tutorails_plumbing
+
+  <exec_depend>base_interfaces_demo</exec_depend>
+  <exec_depend>cpp01_topic</exec_depend>
+  <exec_depend>cpp02_servive</exec_depend>
+  <exec_depend>cpp03_action</exec_depend>
+  <exec_depend>py01_topic</exec_depend>
+  <exec_depend>py02_service</exec_depend>
+  <exec_depend>py03_action</exec_depend>
+  <exec_depend>py04_param</exec_depend>

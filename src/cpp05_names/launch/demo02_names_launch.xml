@@ -1,0 +1,16 @@
+<launch>
+  <!-- <node pkg="turtlesim" exec="turtlesim_node" name="sdy1" />
+  <node pkg="turtlesim" exec="turtlesim_node" namespace="sdy" />
+  <node pkg="turtlesim" exec="turtlesim_node" namespace="sdy" name="sdy_turtle1" /> -->
+
+  <node pkg="turtlesim" exec="turtlesim_node">
+    <remap from="/turtle1/cmd_vel" to="/cmd_vel" /> 
+  </node>
+</launch>
+
+<!-- 
+chiway@chiway-ros2-humble:~$ ros2 node list
+/sdy/sdy_turtle1
+/sdy/turtlesim
+/sdy1
+-->

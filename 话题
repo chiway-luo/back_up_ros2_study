@@ -1,0 +1,39 @@
+话题重名解决方案
+
+1.修改命名空间 命名空间不仅对节点有效还对话题有效
+    ros2 run turtlesim turtlesim_node --ros-args --remap __ns:=/new_namespace 
+2.重映射节点名称
+    ros2 run turtlesim turtlesim_node --ros-args --remap /old_topic_name:=/new_topic_name
+
+以下为拓展内容
+3.使用话题前缀
+    ros2 run turtlesim turtlesim_node --ros-args --topic-prefix /my_prefix
+4.使用节点参数
+    ros2 run turtlesim turtlesim_node --ros-args -p topic_name:=/new_topic_name
+5.在代码中指定话题名称
+    publisher = node.create_publisher(String, '/new_topic_name', 10)
+
+
+好用的键盘工具
+ros2 run teleop_twist_keyboard teleop_twist_keyboard 使用的话题名称/cmd_vel
+
+
+话题可以分为三种类型
+1.全局话题 (话题参考ros系统,与节点命名空间平级)
+2.相对话题 (话题参考的是节点的命名空间,与节点名称平级)
+3.私有话题 (话题参考节点名称,是节点名称的子级)
+
+三种命名方式对比小结
+还是用刚刚的节点：/car/laser_node：
+写法	类型	最终话题名	参考基准
+"/scan"	全局话题	/scan	ROS 根 /
+"scan"	相对话题	/car/scan	节点命名空间 /car
+"~/scan"	私有话题	/car/laser_node/scan	节点 /car/laser_node
+
+ros2 topic list 查看话题列表
+ros2 topic echo /topic_name 查看话题内容
+ros2 topic pub /topic_name std_msgs/String "data: 'Hello, ROS2'" 发布话题内容
+ros2 topic bw /topic_name 查看话题带宽
+ros2 topic delay /topic_name 查看话题延迟 必须包含消息头
+
+ros2 topic pub -r 10 /turtle1/cmd_vel geometry_msgs/msg/Twist "{'linear':{'x': 1.0},'angular':{'z':1}}"
