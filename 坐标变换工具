@@ -1,0 +1,47 @@
+------------坐标变换监听工具 
+
+ros2 run tf2_ros tf2_monitor 监听所有坐标系或特定坐标系的发布频率或者网络延迟
+
+    RESULTS: for all Frames
+
+    Frames:
+    Frame: camera, published by <no authority available>, Average Delay: 133.373, Max Delay: 171.576
+    Frame: laser, published by <no authority available>, Average Delay: 133.372, Max Delay: 171.576
+    Frame: turtle1, published by <no authority available>, Average Delay: 0.000314921, Max Delay: 0.00137782
+
+    All Broadcasters:
+    Node: <no authority available> 62.5592 Hz, Average Delay: 0.000314921 Max Delay: 0.00137782
+
+ros2 run tf2_ros tf2_monitor turtle1 base_link 监听特定坐标系的发布频率或者网络延迟  坐标系1 相对于 坐标系2 的 发布频率和延迟
+
+    RESULTS: for turtle1 to base_link
+    Chain is: turtle1
+    Net delay     avg = 0.00269198: max = 0.0155756
+
+    Frames:
+    Frame: turtle1, published by <no authority available>, Average Delay: 0.000409794, Max Delay: 0.00451565
+
+    All Broadcasters:
+    Node: <no authority available> 62.561 Hz, Average Delay: 0.000409794 Max Delay: 0.00451565
+
+ros2 run tf2_ros tf2_echo turtle1 base_link 监听特定坐标系的变换数据  坐标系1 相对于 坐标系2 的 变换数据
+
+    At time 1765250305.26672577
+    - Translation: [-5.544, -5.544, 0.000]
+    - Rotation: in Quaternion (xyzw) [0.000, 0.000, 0.000, 1.000]
+    - Rotation: in RPY (radian) [0.000, -0.000, 0.000]
+    - Rotation: in RPY (degree) [0.000, -0.000, 0.000]
+    - Matrix:
+    1.000  0.000  0.000 -5.544
+    0.000  1.000  0.000 -5.544
+    0.000  0.000  1.000  0.000
+    0.000  0.000  0.000  1.000
+
+ros2 run tf2_tools view_frames 生成坐标系关系图 并保存为 pdf 文件
+
+    [INFO] [view_frames]: Writing to frames.pdf
+
+
+--------坐标变换工具
+
+ros2 run tf2_ros static_transform_publisher 1 2 3 0 0 0 map base_link  发布一个静态坐标变换  平移(1,2,3) 旋转(0,0,0) 坐标系1:map 相对于 坐标系2:base_link

@@ -73,7 +73,7 @@ public:
            this->get_node_clock_interface(),
            1s
         );
-        //解析数据
+        //解析数据 给缓冲对象注册回调函数
         point_filter_->registerCallback(&TFPOintListener::transform_point,this);
         
     }

@@ -1,0 +1,9 @@
+digraph G {
+"base_link" -> "turtle1"[label=" Broadcaster: Authority undetectable\nAverage rate: 62.448\nBuffer length: 10.008\nMost recent transform: 1765250921.518117\nOldest transform: 1765250911.509754\n"];
+"base_link" -> "laser"[label=" Broadcaster: Authority undetectable\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"base_link" -> "camera"[label=" Broadcaster: Authority undetectable\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1765250943.4695694"[ shape=plaintext ] ;
+}->"base_link";
+}
