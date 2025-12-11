@@ -1,0 +1,34 @@
+<!-- install(DIRECTORY launch DESTINATION share/${PROJECT_NAME}) cmake配置 -->
+<!-- <exec_depend>ros2launch</exec_depend> package.xml配置 -->
+<!-- from glob import glob 用于setup.py配置多个launch文件 -->
+<!-- ('share/' + package_name, glob('launch/*_launch.py')), -->
+<!-- ('share/' + package_name, glob('launch/*_launch.xml')), -->
+<!-- ('share/' + package_name, glob('launch/*_launch.yaml')), -->
+<!--  -->
+<launch>
+  <arg name="t1_name" default="turtle1" />
+  <arg name="t2_name" default="turtle2" />
+  <!-- 乌龟节点 -->
+  <node pkg="turtlesim" exec="turtlesim_node" />
+  <!-- spawn 乌龟生成服务客户端节点 -->
+  <node pkg="py05_exercise" exec="exer01_spawn_py" name="spawn_1" >
+    <param  name="x" value="8.0" />
+    <param  name="y" value="9.0" />
+    <param  name="turtle_name" value="$(var t2_name)" />
+  </node>
+  <!-- 乌龟相对于base_link坐标系的相对关系发布节点 -->
+  <node pkg="py05_exercise" exec="exer02_tf_broadcaster_py" name="tf_broadcaster_1" >
+    <param  name="child_frame_id" value="$(var t1_name)" />
+  </node>
+  <node pkg="py05_exercise" exec="exer02_tf_broadcaster_py" name="tf_broadcaster_2" >
+    <param  name="child_frame_id" value="$(var t2_name)" />
+  </node>
+  <!-- 乌龟速度发布节点 -->
+  <node pkg="py05_exercise" exec="exer03_tf_listener_py" name="tf_listener_1" >
+    <param  name="turtle1_name" value="$(var t1_name)" />
+    <param  name="turtle2_name" value="$(var t2_name)" />
+  </node>
+
+  
+
+</launch>

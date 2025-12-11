@@ -2,6 +2,7 @@
 #include "geometry_msgs/msg/pose.hpp"
 #include "turtlesim/msg/pose.hpp"
 #include "geometry_msgs/msg/twist.hpp"
+#include "turtlesim/srv/spawn.hpp" //可选
 
 /*
     需求:编写程序实现,程序运行后会启动turtlesim_node节点,再调用spawn服务创建第二只乌龟,编写一个节点,订阅
@@ -17,6 +18,8 @@
         5.释放资源
 
     ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args --remap /cmd_vel:=/turtle1/cmd_vel
+
+    可选 launch中生成小乌龟 或者创建服务客户端创建小乌龟
 */
 void normalize_angle(double &angle);
 using namespace std::chrono_literals;
@@ -24,6 +27,15 @@ class FollowTurtle :public rclcpp::Node{
 public:
     FollowTurtle(std::string str1,std::string str2):Node(str1,str2){
         RCLCPP_INFO(this->get_logger(),(str1+"节点创建成功").c_str());
+        //创建服务客户端对象并生成小乌龟 可选
+        client_spawn_ = this->create_client<turtlesim::srv::Spawn>("/spawn");
+        while(!client_spawn_->wait_for_service(1s));
+        auto request = std::make_shared<turtlesim::srv::Spawn::Request>();
+        request->x = 8.0;
+        request->y = 9.0;
+        request->theta = 3.14;
+        request->name = "turtle2";
+        auto result = client_spawn_->async_send_request(request);
         //创建发布者对象
         pub_twist_ = this->create_publisher<geometry_msgs::msg::Twist>("/turtle2/cmd_vel",10);
         //创建订阅者对象 订阅原乌龟的位姿
@@ -45,6 +57,8 @@ public:
     }
 
 private:
+    rclcpp::Client<turtlesim::srv::Spawn>::SharedPtr client_spawn_;
+
     rclcpp::Subscription<turtlesim::msg::Pose>::SharedPtr sub_pose_;
     rclcpp::Subscription<turtlesim::msg::Pose>::SharedPtr sub_pose_2;
     rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr pub_twist_;

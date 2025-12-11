@@ -50,24 +50,33 @@ def generate_launch_description():
         cmd=["rviz2"]  
     )
 
-    step1 = RegisterEventHandler(
-        event_handler=OnProcessStart(
-            target_action=turtle_node,
-            on_start=[cmd_spawn],
-        )
-    )
-    step2 = RegisterEventHandler(
-        event_handler=OnProcessStart(
-            target_action=cmd_spawn,
-            on_start=[demo01_turtle_follow_node, demo02_turtle_tf_broadcaster_node, rviz_node],
-        )
-    )
+    # step1 = RegisterEventHandler(
+    #     event_handler=OnProcessStart(
+    #         target_action=turtle_node,
+    #         on_start=[cmd_spawn],
+    #     )
+    # )
+    # step2 = RegisterEventHandler(
+    #     event_handler=OnProcessStart(
+    #         target_action=cmd_spawn,
+    #         on_start=[demo01_turtle_follow_node, demo02_turtle_tf_broadcaster_node, rviz_node],
+    #     )
+    # )
 
+    # return LaunchDescription(
+    #     [
+    #         turtle_node,
+    #         step1,
+    #         step2,
+            
+    #     ]
+    # )
     return LaunchDescription(
         [
             turtle_node,
-            step1,
-            step2,
-            
+            # cmd_spawn,
+            demo01_turtle_follow_node,
+            demo02_turtle_tf_broadcaster_node,
+            rviz_node,
         ]
     )
