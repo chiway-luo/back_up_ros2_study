@@ -25,8 +25,8 @@
   </node>
   <!-- 乌龟速度发布节点 -->
   <node pkg="py05_exercise" exec="exer03_tf_listener_py" name="tf_listener_1" >
-    <param  name="turtle1_name" value="$(var t1_name)" />
-    <param  name="turtle2_name" value="$(var t2_name)" />
+    <param  name="goal_frame" value="$(var t1_name)" />
+    <param  name="frame_id" value="$(var t2_name)" />
   </node>
 
   

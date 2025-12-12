@@ -4,6 +4,7 @@ from geometry_msgs.msg import Twist #乌龟速度格式文件
 from geometry_msgs.msg import TransformStamped
 from tf2_ros import TransformListener,Buffer
 import math
+from rclpy.time import Time
 
 """
     需求:监听坐标系变化广播数据,并生成turtle1相对于turtle的坐标系变换
@@ -27,8 +28,10 @@ class TFListener(Node):
     def __init__(self,str1):
         super().__init__(str1)
         self.get_logger().info(f"成功创建节点{str1}")
-        self.declare_parameter("turtle1_name","turtle1")
-        self.declare_parameter("turtle2_name","turtle2")
+        self.declare_parameter("goal_frame","turtle1")
+        self.declare_parameter("frame_id","turtle2")
+        self.turtle1_name_ = self.get_parameter("goal_frame").get_parameter_value().string_value
+        self.turtle2_name_ = self.get_parameter("frame_id").get_parameter_value().string_value
         #创建缓冲区对象
         self.buffer_ = Buffer()
         #创建坐标系变换监听器,与缓冲区对象关联
@@ -36,7 +39,7 @@ class TFListener(Node):
         #创建速度发布方
         self.vel_pub_ = self.create_publisher(
             Twist,
-            f"/{self.get_parameter('turtle2_name').get_parameter_value().string_value}/cmd_vel",10
+            f"/{self.turtle2_name_}/cmd_vel",10
         )
         #创建定时器
         self.timer_ = self.create_timer(0.5,self.timer_cb)
@@ -45,15 +48,15 @@ class TFListener(Node):
     def timer_cb(self):
         #进行坐标系转换
         if self.buffer_.can_transform(
-            f"{self.get_parameter('turtle2_name').get_parameter_value().string_value}",
-            f"{self.get_parameter('turtle1_name').get_parameter_value().string_value}",
-            rclpy.time.Time() 
+            f"{self.turtle2_name_}",
+            f"{self.turtle1_name_}",
+            Time() 
         ):
             transform_stamped: TransformStamped
             transform_stamped = self.buffer_.lookup_transform(
-                f"{self.get_parameter('turtle2_name').get_parameter_value().string_value}",
-                f"{self.get_parameter('turtle1_name').get_parameter_value().string_value}",
-                rclpy.time.Time() 
+                f"{self.turtle2_name_}",
+                f"{self.turtle1_name_}",
+                Time() 
             )#target_frame: str, source_frame: str,
             #创建速度消息
             vel_msg = Twist()
@@ -74,6 +77,7 @@ class TFListener(Node):
             self.vel_pub_.publish(vel_msg)
         else:
             self.get_logger().warn("等待坐标系转换数据...")
+
 
 def main():
     #初始化ros2客户端

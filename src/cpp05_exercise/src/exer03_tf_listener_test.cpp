@@ -9,6 +9,7 @@
 
 
 /*
+    当前为修改版本 
     需求:监听坐标变换广播数据,并生成turtle1相对于turtle2的坐标变换关系,
         进而生成turtle2的运动指令
     流程:
@@ -19,7 +20,9 @@
             3-2创建缓冲区对象
             3-3创建坐标系变换监听器与缓冲区对象关联
             3-4创建速度发布方
-            3-5创建定时器,回调函数中实现坐标变换,生成速度指令并发布
+            3-5创建定时器,回调函数中实现坐标变换
+       ***  3-6回调函数中,实现点坐标相对于turtle1的偏移,并转换到turtle2坐标系下
+       ***  3-7计算速度指令并发布
         4.调用spin函数,并传入节点对象指针
         5.释放资源
 */
@@ -70,18 +73,39 @@ private:
             child_frame_id_,//子坐标系
             tf2::TimePointZero//时间戳(最新数据)
             );
+            //在turtle1下定义目标点 相对于turtle1的偏移
+            geometry_msgs::msg::PointStamped point_in_child;
+            point_in_child.header.frame_id = child_frame_id_;
+            point_in_child.point.x = goal_x_offset_;
+            point_in_child.point.y = goal_y_offset_;
+            point_in_child.point.z = 0.0;
+            //将目标点转换到frame_id 坐标系下
+            geometry_msgs::msg::PointStamped point_in_frame;
+            tf2::doTransform(
+                point_in_child,
+                point_in_frame,
+                transform_stamped
+            );
+            double goal_x = point_in_frame.point.x;
+            double goal_y = point_in_frame.point.y;
             //组织并发布速度消息
             geometry_msgs::msg::Twist twist_msg;
-            double d_x = transform_stamped.transform.translation.x;
-            double d_y = transform_stamped.transform.translation.y;
-            double distance = std::sqrt(d_x*d_x + d_y*d_y);
-
-            double target_angle = std::atan2(d_y, d_x);
+            double distance = std::sqrt(goal_x*goal_x + goal_y*goal_y);
+            double target_angle = std::atan2(goal_y, goal_x);
             double K_linear = 1.0;
             double K_angular = 4.0;
-
             twist_msg.linear.x = K_linear * distance;
             twist_msg.angular.z = K_angular * target_angle;
+            // double d_x = transform_stamped.transform.translation.x;
+            // double d_y = transform_stamped.transform.translation.y;
+            // double distance = std::sqrt(d_x*d_x + d_y*d_y);
+
+            // double target_angle = std::atan2(d_y, d_x);
+            // double K_linear = 1.0;
+            // double K_angular = 1.0;
+
+            // twist_msg.linear.x = K_linear * distance;
+            // twist_msg.angular.z = K_angular * target_angle;
 
             if (distance < 0.01)
             {
