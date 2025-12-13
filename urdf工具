@@ -1,0 +1,150 @@
+sudo apt install liburdfdom-tools
+
+常用
+check_urdf your_robot.urdf 检查复杂的urdf文件是否存在语法问题
+
+urdf_to_graphviz your_robot.urdf 可以查看urdf模型结构,显示不同link和joint的层级关系
+
+注意
+urdf_to_graphiz 和 urdf_to_graphviz 相似 但是iz为历史版本,不建议使用
+
+# 生成urdf文件的可视化模型
+urdf_to_graphviz your_robot.urdf 
+# 将urdf文件转换为xacro格式
+urdf_to_xacro your_robot.urdf > your_robot.xacro
+# 检查urdf文件的正确性
+check_urdf your_robot.urdf
+# 显示urdf文件的层次结构
+urdf_tree your_robot.urdf
+# 将urdf文件转换为sdf格式
+urdf_to_sdf your_robot.urdf -o your_robot.sdf
+# 将xacro文件转换为urdf格式
+xacro your_robot.xacro > your_robot.urdf
+# 可视化urdf文件
+view_urdf your_robot.urdf
+# 可视化xacro文件
+view_xacro your_robot.xacro
+# 将sdf文件转换为urdf格式
+sdf_to_urdf your_robot.sdf -o your_robot.urdf
+# 提取urdf文件中的关节信息
+urdf_joint_states your_robot.urdf
+# 提取urdf文件中的链接信息
+urdf_link_states your_robot.urdf
+# 提取urdf文件中的传感器信息
+urdf_sensor_states your_robot.urdf
+# 提取urdf文件中的惯性信息
+urdf_inertial_states your_robot.urdf
+# 提取urdf文件中的视觉信息
+urdf_visual_states your_robot.urdf
+# 提取urdf文件中的碰撞信息
+urdf_collision_states your_robot.urdf
+# 提取urdf文件中的材质信息
+urdf_material_states your_robot.urdf
+# 提取urdf文件中的插件信息
+urdf_plugin_states your_robot.urdf
+# 提取urdf文件中的传动信息
+urdf_transmission_states your_robot.urdf
+# 提取urdf文件中的拓扑信息
+urdf_topology_states your_robot.urdf
+# 提取urdf文件中的坐标系信息
+urdf_frame_states your_robot.urdf
+# 提取urdf文件中的关节限制信息
+urdf_joint_limit_states your_robot.urdf
+# 提取urdf文件中的关节动力学信息
+urdf_joint_dynamics_states your_robot.urdf
+# 提取urdf文件中的关节初始位置信息
+urdf_joint_initial_states your_robot.urdf
+# 提取urdf文件中的关节初始速度信息
+urdf_joint_initial_velocity_states your_robot.urdf
+# 提取urdf文件中的关节初始加速度信息
+urdf_joint_initial_acceleration_states your_robot.urdf
+# 提取urdf文件中的关节控制信息
+urdf_joint_control_states your_robot.urdf
+# 提取urdf文件中的关节反馈信息
+urdf_joint_feedback_states your_robot.urdf
+# 提取urdf文件中的关节传感器信息
+urdf_joint_sensor_states your_robot.urdf
+# 提取urdf文件中的关节执行器信息
+urdf_joint_actuator_states your_robot.urdf
+# 提取urdf文件中的关节驱动信息
+urdf_joint_drive_states your_robot.urdf
+# 提取urdf文件中的关节阻尼信息
+urdf_joint_damping_states your_robot.urdf
+# 提取urdf文件中的关节摩擦信息
+urdf_joint_friction_states your_robot.urdf
+# 提取urdf文件中的关节弹簧信息
+urdf_joint_spring_states your_robot.urdf
+# 提取urdf文件中的关节阻尼信息
+urdf_joint_stiffness_states your_robot.urdf
+# 提取urdf文件中的关节死区信息
+urdf_joint_deadzone_states your_robot.urdf
+# 提取urdf文件中的关节最大力信息
+urdf_joint_max_force_states your_robot.urdf
+# 提取urdf文件中的关节最大速度信息
+urdf_joint_max_velocity_states your_robot.urdf
+# 提取urdf文件中的关节最小位置限制信息
+urdf_joint_min_position_states your_robot.urdf
+# 提取urdf文件中的关节最大位置限制信息
+urdf_joint_max_position_states your_robot.urdf.urdf
+# 提取urdf文件中的关节最小速度限制信息
+urdf_joint_min_velocity_states your_robot.urdf
+# 提取urdf文件中的关节最大速度限制信息
+urdf_joint_max_velocity_states your_robot.urdf
+# 提取urdf文件中的关节最小加速度限制信息
+urdf_joint_min_acceleration_states your_robot.urdf
+# 提取urdf文件中的关节最大加速度限制信息
+urdf_joint_max_acceleration_states your_robot.urdf
+# 提取urdf文件中的关节初始位置偏移信息
+urdf_joint_initial_position_offset_states your_robot.urdf
+# 提取urdf文件中的关节初始速度偏移信息
+urdf_joint_initial_velocity_offset_states your_robot.urdf
+# 提取urdf文件中的关节初始加速度偏移信息
+urdf_joint_initial_acceleration_offset_states your_robot.urdf
+# 提取urdf文件中的关节控制增益信息
+urdf_joint_control_gain_states your_robot.urdf
+# 提取urdf文件中的关节反馈增益信息
+urdf_joint_feedback_gain_states your_robot.urdf
+# 提取urdf文件中的关节传感器增益信息
+urdf_joint_sensor_gain_states your_robot.urdf
+# 提取urdf文件中的关节执行器增益信息
+urdf_joint_actuator_gain_states your_robot.urdf
+# 提取urdf文件中的关节驱动增益信息
+urdf_joint_drive_gain_states your_robot.urdf
+# 提取urdf文件中的关节阻尼增益信息
+urdf_joint_damping_gain_states your_robot.urdf
+# 提取urdf文件中的关节摩擦增益信息
+urdf_joint_friction_gain_states your_robot.urdf
+# 提取urdf文件中的关节弹簧增益信息
+urdf_joint_spring_gain_states your_robot.urdf
+# 提取urdf文件中的关节阻尼增益信息
+urdf_joint_stiffness_gain_states your_robot.urdf
+# 提取urdf文件中的关节死区增益信息
+urdf_joint_deadzone_gain_states your_robot.urdf
+# 提取urdf文件中的关节最大力增益信息
+urdf_joint_max_force_gain_states your_robot.urdf
+# 提取urdf文件中的关节最大速度增益信息
+urdf_joint_max_velocity_gain_states your_robot.urdf
+# 提取urdf文件中的链接质量信息
+urdf_link_mass_states your_robot.urdf
+# 提取urdf文件中的链接惯性张量信息
+urdf_link_inertia_states your_robot.urdf
+# 提取urdf文件中的链接位置偏移信息
+urdf_link_position_offset_states your_robot.urdf
+# 提取urdf文件中的链接姿态偏移信息
+urdf_link_orientation_offset_states your_robot.urdf
+# 提取urdf文件中的链接视觉信息
+urdf_link_visual_states your_robot.urdf
+# 提取urdf文件中的链接碰撞信息
+urdf_link_collision_states your_robot.urdf
+# 提取urdf文件中的链接传感器信息
+urdf_link_sensor_states your_robot.urdf
+# 提取urdf文件中的链接插件信息
+urdf_link_plugin_states your_robot.urdf
+# 提取urdf文件中的链接拓扑信息
+urdf_link_topology_states your_robot.urdf
+# 提取urdf文件中的链接坐标系信息
+urdf_link_frame_states your_robot.urdf
+# 提取urdf文件中的链接材质信息
+urdf_link_material_states your_robot.urdf
+# 提取urdf文件中的链接惯性信息
+urdf_link_inertial_states your_robot.urdf

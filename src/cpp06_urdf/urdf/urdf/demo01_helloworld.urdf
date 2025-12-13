@@ -1,0 +1,23 @@
+<!-- 需求: 创建一个盒状机器人 长1 宽0.5 高度 0.1  单位 m -->
+
+
+<!-- 根标签 -->
+<robot name="hello_world">
+  <!-- 连杆 -->
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <mass value="0.0"/>
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+    </inertial>
+    <!-- 可视化 -->
+    <visual name="world_visual">
+      <!-- 几何外观 -->
+      <geometry>
+        <!-- 长方体 -->
+        <box size="1.0 0.5 0.1"/>
+      </geometry>
+    </visual>
+  </link>
+
+</robot>

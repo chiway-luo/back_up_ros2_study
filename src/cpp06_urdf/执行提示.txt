@@ -1,0 +1,21 @@
+<!-- urdf通用依赖 -->
+<exec_depend>robot_state_publisher</exec_depend>
+<exec_depend>joint_state_publisher</exec_depend>
+<exec_depend>urdf</exec_depend>
+<exec_depend>xacro</exec_depend>
+<exec_depend>ros2launch</exec_depend>
+
+install(
+  DIRECTORY config launch meshes urdf rviz
+  DESTINATION share/${PROJECT_NAME}
+)
+
+
+
+
+rviz2 -d src/cpp06_urdf/rviz/Nav.rviz 
+
+ros2 launch cpp06_urdf display_launch.py model_path:=`ros2 pkg prefix --share cpp06_urdf`/urdf/urdf/demo02_link.urdf
+ros2 run joint_state_publisher_gui joint_state_publisher_gui
+
+ros2 launch cpp06_urdf display_launch.py model_path:=`ros2 pkg prefix --share test_car`/urdf/test_car.urdf
