@@ -1,0 +1,35 @@
+<!-- 摄像头 -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!-- 声明参数 -->
+  <xacro:property name="camera_size_x" value="0.01"/>
+  <xacro:property name="camera_size_y" value="0.08"/>
+  <xacro:property name="camera_size_z" value="0.01"/>
+
+  <xacro:property name="camera_offset_x" value="${car_length / 2 - 0.01}"/>
+  <xacro:property name="camera_offset_y" value="0.0"/>
+  <xacro:property name="camera_offset_z" value="${car_height / 2 + camera_size_z / 2}"/>
+
+  <xacro:property name="camera_name" value="camera"/>
+
+  <xacro:macro name="camera" params="parent camera">
+    <link name="${camera}">
+      <visual>
+        <geometry>
+          <box size="${camera_size_x} ${camera_size_y} ${camera_size_z}"/>
+        </geometry>
+        <material name="red"/>
+      </visual>
+    </link>
+
+    <joint name="${camera}_2_${parent}" type="continuous">
+      <parent link="${parent}"/>
+      <child link="${camera}"/>
+      <origin xyz="${camera_offset_x} ${camera_offset_y} ${camera_offset_z}" rpy="0 0 0"/>
+      <axis xyz="0.0 0.0 1"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- 调用宏 -->
+  <xacro:camera parent="${base_name}" camera="${camera_name}" />
+
+</robot>

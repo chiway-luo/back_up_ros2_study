@@ -1,0 +1,36 @@
+<!-- 雷达 -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!-- 声明变量 -->
+  <xacro:property name="laser_radius" value="0.03"/>
+  <xacro:property name="laser_length" value="0.03"/>
+
+  <xacro:property name="laser_offset_x" value="0.0"/>
+  <xacro:property name="laser_offset_y" value="0.0"/>
+  <xacro:property name="laser_offset_z" value="${car_height/2 + laser_length/2}"/>
+
+  <xacro:property name="laser_name" value="laser"/>
+
+  <xacro:macro name="laser" params="laser">
+    <link name="${laser}">
+      <visual>
+        <geometry>
+          <cylinder radius="${laser_radius}" length="${laser_length}"/>
+        </geometry>
+        <material name="blue"/>
+      </visual>
+    </link>
+
+    <joint name="${laser_name}_2_${base_name}" type="fixed">
+      <parent link="${base_name}"/>
+      <child link="${laser}"/>
+      <origin xyz="${laser_offset_x} ${laser_offset_y} ${laser_offset_z}" rpy="0 0 0"/>
+    </joint>
+
+  </xacro:macro>
+
+  <!-- 调用宏函数,生成雷达 -->
+  <xacro:laser laser="${laser_name}"/>
+
+  
+
+</robot>

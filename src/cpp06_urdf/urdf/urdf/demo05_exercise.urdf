@@ -13,6 +13,10 @@
     4.添加一个车轮
     5.将车轮与base_link关联
     6.复制车轮，完成四个车轮的添加
+
+  注意:
+    如果在零件中设置旋转,那么当前的零件坐标系不会发生变化,只是视觉效果发生变化
+    关节的origin标签中设置的xyz和rpy是相对于父连接件坐标系的,会同时旋转坐标系
 -->
 
 <robot name="my_car">
@@ -40,10 +44,11 @@
       <material name="yellow"/>
     </visual>
   </link>
-
+  
   <joint name="base_link_2_base_footprint" type="fixed">
     <parent link="base_footprint"/>
     <child link="base_link"/>
+    <!-- z轴偏移量 = 车体高度/2 + 离地间距 -->
     <origin xyz="0 0 0.05" rpy="0 0 0"/>
   </joint>
 
@@ -59,6 +64,7 @@
   <joint name="left_front_wheel_2_base_link" type="continuous">
     <parent link="base_link"/>
     <child link="left_front_wheel"/>
+    <!-- 车体长度/2(相切)   车体宽度/2(一半外面)  车体高度/2 + 离地高度 - 轮子半径    -->
     <origin xyz="0.075 0.06 -0.025" rpy="1.5708 0 0"/>
     <axis xyz="0.0 0.0 1"/>
   </joint>

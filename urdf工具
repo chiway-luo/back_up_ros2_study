@@ -8,10 +8,12 @@ urdf_to_graphviz your_robot.urdf 可以查看urdf模型结构,显示不同link�
 注意
 urdf_to_graphiz 和 urdf_to_graphviz 相似 但是iz为历史版本,不建议使用
 
+
+
+
+
 # 生成urdf文件的可视化模型
 urdf_to_graphviz your_robot.urdf 
-# 将urdf文件转换为xacro格式
-urdf_to_xacro your_robot.urdf > your_robot.xacro
 # 检查urdf文件的正确性
 check_urdf your_robot.urdf
 # 显示urdf文件的层次结构

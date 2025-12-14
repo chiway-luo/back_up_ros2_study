@@ -1,0 +1,6 @@
+<!-- 需求: 在当前文件中包含其他xacro文件 -->
+<!-- 如果需要包含文件,name属性应该设置为与父级文件名相同,或者不写,不建议与父级文件名不同 -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="demo04_base_include">
+  <xacro:include filename="demo02_base_property_urdf.xacro"/>
+  <xacro:include filename="demo03_base_func_urdf.xacro"/>
+</robot>

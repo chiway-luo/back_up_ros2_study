@@ -1,0 +1,117 @@
+<!-- 底盘实现 -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!-- 声明变量 -->
+  <xacro:property name="PI" value="3.14159265359" />
+  <xacro:property name="base_name" value="base_link" />
+  <xacro:property name="basefoot_name" value="base_footprint" />
+  <!-- 底盘尺寸 -->
+  <xacro:property name="car_length" value="0.2" />
+  <xacro:property name="car_width" value="0.12" />
+  <xacro:property name="car_height" value="0.07" />
+  <!-- 轮胎 -->
+  <xacro:property name="wheel_radius" value="0.025" />
+  <xacro:property name="wheel_length" value="0.02" />
+  <xacro:property name="wheel_offset_x" value="${car_length / 2 - wheel_radius}" />
+  <xacro:property name="wheel_offset_y" value="${car_width / 2 }" />
+  <xacro:property name="wheel_offset_z" value="${-1 * (car_height/ 2 + distance_base - wheel_radius)}" />
+
+  <xacro:property name="wheel_name_1" value="left_front_wheel" />
+  <xacro:property name="wheel_1_offset_x" value="${wheel_offset_x}" />
+  <xacro:property name="wheel_1_offset_y" value="${wheel_offset_y}" />
+
+
+  <xacro:property name="wheel_name_2" value="right_front_wheel" />
+  <xacro:property name="wheel_2_offset_x" value="${wheel_offset_x}" />
+  <xacro:property name="wheel_2_offset_y" value="${-1 * wheel_offset_y}" />
+
+  <xacro:property name="wheel_name_3" value="left_back_wheel" />
+  <xacro:property name="wheel_3_offset_x" value="${-1 * wheel_offset_x}" />
+  <xacro:property name="wheel_3_offset_y" value="${wheel_offset_y}" />
+
+
+  <xacro:property name="wheel_name_4" value="right_back_wheel" />
+  <xacro:property name="wheel_4_offset_x" value="${-1 * wheel_offset_x}" />
+  <xacro:property name="wheel_4_offset_y" value="${-1 * wheel_offset_y}" />
+
+  <!-- 离地间距 -->
+  <xacro:property name="distance_base" value="0.015" />
+  <!-- 颜色 -->
+  <material name="yellow">
+    <color rgba="0.9 0.6 0.0 0.5"/>
+  </material>
+  <material name="black">
+    <color rgba="0.0 0.0 0.0 0.5"/>
+  </material>
+    <material name="red" >
+    <color rgba="1.0 0.0 0.0 0.5"/>
+  </material>
+  <material name="blue" >
+    <color rgba="0.0 0.0 1.0 0.5"/>
+  </material>
+
+
+  <!-- 设置base_footprint -->
+  <link name="base_footprint">
+    <visual>
+      <geometry>
+        <sphere radius="0.001"/>
+      </geometry>
+    </visual>
+  </link>
+  <!-- 设置base_link -->
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="${car_length} ${car_width} ${car_height}"/>
+      </geometry>
+      <material name="yellow"/>
+    </visual>
+  </link>
+  <!-- 使用joint将二者关联 -->
+  <joint name="base_link_2_base_footprint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0.0 0.0 ${car_height/ 2 + distance_base}" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <!-- 定义车轮相关的宏 -->
+  <!-- 宏函数创建规则: 封装通用代码,变得数据以参数的方式暴露 -->
+  <xacro:macro 
+    name="wheel_func" 
+    params="wheel_name offset_x offset_y">
+    <!-- 车轮link -->
+    <link name="${wheel_name}">
+      <visual>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+        </geometry>
+        <material name="black"/>
+      </visual>
+    </link>
+    <!-- 车轮joint -->
+    <joint name="${wheel_name}_2_base_link" type="continuous">
+      <parent link="${base_name}"/>
+      <child link="${wheel_name}"/>
+      <origin xyz="${offset_x} ${offset_y} ${wheel_offset_z}" rpy="${PI / 2} 0.0 0.0"/>
+      <axis xyz="0 0 1"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- 调用宏生成多个车轮 -->
+  <xacro:wheel_func 
+    wheel_name="${wheel_name_1}" 
+    offset_x="${wheel_1_offset_x}" 
+    offset_y="${wheel_1_offset_y}"/>
+  <xacro:wheel_func 
+    wheel_name="${wheel_name_2}" 
+    offset_x="${wheel_2_offset_x}" 
+    offset_y="${wheel_2_offset_y}"/>
+  <xacro:wheel_func 
+    wheel_name="${wheel_name_3}" 
+    offset_x="${wheel_3_offset_x}" 
+    offset_y="${wheel_3_offset_y}"/>
+  <xacro:wheel_func 
+    wheel_name="${wheel_name_4}" 
+    offset_x="${wheel_4_offset_x}" 
+    offset_y="${wheel_4_offset_y}"/>
+  
+</robot>
