@@ -1,4 +1,4 @@
-cmake_minimum_required( VERSION 2.8.7 FATAL_ERROR )
+cmake_minimum_required( VERSION 3.8 FATAL_ERROR )
 PROJECT(Stage)
 
 SET( V_MAJOR 4 )
@@ -95,6 +95,17 @@ find_package( PNG REQUIRED )
 # todo: fix this properly
 # SET( PNG_LIBRARIES /opt/X11/lib/libpng.dylib )
 # SET( PNG_INCLUDE_DIR /opt/X11/include )
+
+# 让 FindOpenGL 优先使用 GLVND（Ubuntu 20.04/22.04 通常更推荐）
+if(POLICY CMP0072)
+  cmake_policy(SET CMP0072 NEW)
+endif()
+set(OpenGL_GL_PREFERENCE GLVND)
+#如果需要使用旧版本(老项目)
+# if(POLICY CMP0072)
+#   cmake_policy(SET CMP0072 OLD)
+# endif()
+# set(OpenGL_GL_PREFERENCE LEGACY)
 
 set (FLTK_SKIP_FLUID TRUE) 
 find_package( FLTK REQUIRED )
