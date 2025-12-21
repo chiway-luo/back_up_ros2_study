@@ -1,0 +1,17 @@
+#话题练习
+
+编写发布方实现,发布速度指令控制机器人做圆周运动
+ros2 run my_exer01_topic_pub pub_vel
+
+每移动2m,在终端输出一次机器人位置坐标
+ros2 run my_exer02_topic_sub sub_odom
+
+#服务端练习
+
+服务端发送圆周运动的速度消息(默认是0),已经定义好速度消息
+需要启动话题练习1的发布方
+ros2 run my_exer01_topic_pub pub_vel
+ros2 run my_exer03_service_server cru_server
+
+客户端发送启动/停止指令(启动-1,停止-0)
+ros2 run my_exer04_service_client cru_client 0

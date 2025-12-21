@@ -1,0 +1,7 @@
+#请求 + 响应
+int32 flag
+---
+bool success
+string message
+float64 x
+float64 y
