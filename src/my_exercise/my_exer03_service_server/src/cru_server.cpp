@@ -55,7 +55,7 @@ public:
         RCLCPP_INFO(this->get_logger(),(str1+"节点创建成功").c_str());
         //创建服务端对象
         server_ = this->create_service<my_exer_interfaces::srv::Cru>(
-            "cru_service",
+            "/my_car/cru_service",//服务话题名
             std::bind(&CruServer::service_cb,this,_1,_2)
         );
         //创建订阅方对象 里程计

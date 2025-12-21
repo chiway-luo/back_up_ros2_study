@@ -1,0 +1,13 @@
+# 1.请求数据
+float64 distance
+---
+# 2.最终响应 请求的距离 实际运行的距离 坐标点
+float64 target_distance
+float64 actual_distance
+float64 x
+float64 y
+---
+# 3.连续反馈 剩余距离 实时坐标点数据
+float64 current_distance
+float64 x
+float64 y

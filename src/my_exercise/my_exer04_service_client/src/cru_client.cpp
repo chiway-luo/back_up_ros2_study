@@ -24,7 +24,7 @@ public:
         RCLCPP_INFO(this->get_logger(),"namesapce: %s node: %s 节点创建成功",str2.c_str(),str1.c_str());
         //创建客户端对象
         client_cru_ = this->create_client<my_exer_interfaces::srv::Cru>(
-            "cru_service"
+            "/my_car/cru_service"//服务端的服务名称
         );
     }
 
