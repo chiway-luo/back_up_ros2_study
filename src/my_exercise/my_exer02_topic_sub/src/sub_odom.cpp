@@ -88,7 +88,7 @@ int main(int argc, char * argv[])
     rclcpp::init(argc,argv);
 
     //调用spin函数,使用自定义类对象指针
-    rclcpp::spin(std::make_shared<SubOdom>("sub_odom","mycar"));
+    rclcpp::spin(std::make_shared<SubOdom>("sub_odom_node_cpp","my_car"));
 
     //释放资源
     rclcpp::shutdown();

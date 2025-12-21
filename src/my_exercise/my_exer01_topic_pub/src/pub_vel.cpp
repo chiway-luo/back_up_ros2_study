@@ -13,6 +13,8 @@
             3-3在定时器的回调函数中,组织消息数据并发布
         4.调用spin函数,并传入节点对象指针
         5.释放资源
+
+    新增实现:如果速度没有改变则不发布新消息
 */
 using namespace std::chrono_literals; //使用时间命名空间
 class PubVel :public rclcpp::Node{
@@ -35,15 +37,20 @@ public:
 private:
     rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr pub_vel_;
     rclcpp::TimerBase::SharedPtr timer_;
-
     
+
     void timer_callback(){
         //组织消息数据并发布
         geometry_msgs::msg::Twist vel_msg;
         vel_msg.linear.x = this->get_parameter("linear_x").as_double();
         vel_msg.angular.z = this->get_parameter("angular_z").as_double();
         pub_vel_->publish(vel_msg);
+        static geometry_msgs::msg::Twist last_vel_msg = vel_msg;
+        if(last_vel_msg.linear.x == vel_msg.linear.x && last_vel_msg.angular.z == vel_msg.angular.z){
+            return;
+        }
         RCLCPP_INFO(this->get_logger(),"发布速度指令:线速度:%.2f,角速度:%.2f",vel_msg.linear.x,vel_msg.angular.z);
+        last_vel_msg = vel_msg;
     }
 };
 
@@ -53,7 +60,7 @@ int main(int argc, char * argv[])
     rclcpp::init(argc,argv);
 
     //调用spin函数,使用自定义类对象指针
-    rclcpp::spin(std::make_shared<PubVel>("pub_vel","my_car"));
+    rclcpp::spin(std::make_shared<PubVel>("pub_vel_node_cpp","my_car"));
 
     //释放资源
     rclcpp::shutdown();
