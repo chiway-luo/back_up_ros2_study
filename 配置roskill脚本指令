@@ -1,0 +1,29 @@
+目的:
+将两行指令封装为终端指令roskill，方便刷新ROS2 discovery缓存。
+ros2 daemon stop
+ros2 daemon start
+
+
+操作步骤:
+
+mkdir -p ~/bin
+
+
+cat > ~/bin/roskill <<'EOF'
+#!/usr/bin/env bash
+# 刷新 ROS2 discovery 缓存：停止并重启 daemon
+set -e
+
+# stop 可能会提示“没在跑”，忽略即可
+ros2 daemon stop >/dev/null 2>&1 || true
+ros2 daemon start >/dev/null 2>&1 || true
+
+echo "[roskill] ros2 daemon restarted."
+EOF
+
+
+chmod +x ~/bin/roskill
+
+
+grep -q 'export PATH="$HOME/bin:$PATH"' ~/.bashrc || echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
