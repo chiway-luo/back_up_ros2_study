@@ -1,0 +1,32 @@
+flowchart TD
+    A([程序开始]) --> B{argc == 2 ?}
+    B -- 否 --> B1["打印: 请提交一个距离数据!!!\nreturn 1"] --> Z([结束])
+    B -- 是 --> C["InitOptions: shutdown_on_signal=false"]
+    C --> D["rclcpp::init(argc, argv, opt)"]
+    D --> E["注册SIGINT回调\nCtrl+C -> g_stop=true"]
+    E --> F["创建节点 NavClient(navclient_node_cpp, my_car)"]
+    F --> G["send_goal(distance)"]
+
+    %% send_goal 内部
+    G --> H{"wait_for_action_server(1s)成功?"}
+    H -- 否 --> I{"g_stop == true ?"}
+    I -- 是 --> I1["打印: 程序被中断\nreturn"] --> J["回到main继续执行"]
+    I -- 否 --> I2["打印: 等待动作服务端连接..."] --> H
+    H -- 是 --> K["connected_server=true\n保存target_distance"]
+    K --> L["构造 Nav::Goal(goal_msg.distance=distance)"]
+    L --> M["绑定回调: goal_response_callback feedback_callback result_callback"]
+    M --> N["async_send_goal(goal_msg, options)"]
+    N --> J
+
+    %% main spin 循环
+    J --> O["创建SingleThreadedExecutor\nadd_node(node)"]
+    O --> P{"循环条件满足?\n rclcpp::ok && !g_stop\n && !goal_canceled && !goal_finished"}
+    P -- 是 --> Q["exec.spin_some()"]
+    Q --> R["sleep 100ms"]
+    R --> P
+    P -- 否 --> S{"g_stop==true 且\nconnected_server==true 且\ngoal_canceled==false ?"}
+    S -- 是 --> T["node->cancel_goal()\nasync_cancel_goal(goal_handle)"]
+    S -- 否 --> U["不发送取消"]
+    T --> V["rclcpp::shutdown()"]
+    U --> V
+    V --> Z

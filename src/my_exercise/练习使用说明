@@ -15,3 +15,16 @@ ros2 run my_exer03_service_server cru_server
 
 客户端发送启动/停止指令(启动-1,停止-0)
 ros2 run my_exer04_service_client cru_client 0
+
+#action练习
+服务端接收请求,让机器人移动指定距离,监听/odom里程计话题,调用my_exer01_topic_pub发布速度节点(注入参数)
+ros2 run my_exer05_action_server nav_server
+
+客户端发送请求,让机器人移动指定距离
+#版本说明 
+无后缀采用自己实现ctrl+C停止,在主函数中注册子线程
+有后缀为教师实例修改版,在处理服务端响应的回调函数中注册子线程,实现对ctrl+C的响应
+ros2 run my_exer06_action_client nav_client 1.0
+ros2 run my_exer06_action_client nav_client_study 1.0
+
+

@@ -8,6 +8,6 @@ float64 x
 float64 y
 ---
 # 3.连续反馈 剩余距离 实时坐标点数据
-float64 current_distance
+float64 diff_distance
 float64 x
 float64 y
