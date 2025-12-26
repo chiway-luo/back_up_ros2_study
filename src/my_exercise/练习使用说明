@@ -28,3 +28,9 @@ ros2 run my_exer06_action_client nav_client 1.0
 ros2 run my_exer06_action_client nav_client_study 1.0
 
 
+#####仿真环境启动
+ros2 launch stage_ros2 my_house.launch.py
+
+#####debug信息指令
+--ros-args --log-level debug  终端代码
+this->get_logger().set_level(rclcpp::Logger::Level::Debug); 代码中设置,只显示本节点的debug信息
