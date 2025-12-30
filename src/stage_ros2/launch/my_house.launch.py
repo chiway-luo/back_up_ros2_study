@@ -14,7 +14,7 @@ def generate_launch_description():
     this_directory = get_package_share_directory('stage_ros2')
     use_sim_time = LaunchConfiguration('use_sim_time',  default='true')
 
-    stage_world_arg = DeclareLaunchArgument(
+    stage_world_arg = DeclareLaunchArgument(#地图参数
         'world',
         default_value=TextSubstitution(text='my_house'),
         description='World file relative to the project world file, without .world')
@@ -27,6 +27,15 @@ def generate_launch_description():
         return [SetLaunchConfiguration('world_file', file)]
 
     stage_world_configuration_arg = OpaqueFunction(function=stage_world_configuration)
+
+    #添加map相对于odom的静态变换
+    map_to_odom = Node(
+        package="tf2_ros",
+        executable="static_transform_publisher",
+        name="map_to_odom",
+        arguments=["--frame-id","map","--child-frame-id","odom","--x","0.5","--y","0.5","--yaw","0.786"]
+    )
+    
 
     return LaunchDescription([
         stage_world_arg,
@@ -46,5 +55,6 @@ def generate_launch_description():
             arguments=['-d', os.path.join(
             this_directory,
             'config/rviz/example.rviz')],
-        )
+        ),
+        map_to_odom
     ])

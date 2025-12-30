@@ -34,3 +34,9 @@ ros2 launch stage_ros2 my_house.launch.py
 #####debug信息指令
 --ros-args --log-level debug  终端代码
 this->get_logger().set_level(rclcpp::Logger::Level::Debug); 代码中设置,只显示本节点的debug信息
+
+#####当智能小车端启动时使用rviz查看可视化信息
+需要descriptions的urdf文件,所以需要进入工作空间刷新环境变量
+. install/local_setup.bash
+rviz2
+#如果需要导航功能,需要进入nav2_bring 加载rviz配置文件
