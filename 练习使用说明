@@ -40,3 +40,7 @@ this->get_logger().set_level(rclcpp::Logger::Level::Debug); 代码中设置,只�
 . install/local_setup.bash
 rviz2
 #如果需要导航功能,需要进入nav2_bring 加载rviz配置文件
+
+
+#####多车环境下 发布odom相对于map的坐标系静态变换
+ros2 launch my_exer09_tf_pub stage_ros2_multi.launch.py

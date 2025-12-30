@@ -33,7 +33,7 @@ def generate_launch_description():
         package="tf2_ros",
         executable="static_transform_publisher",
         name="map_to_odom",
-        arguments=["--frame-id","map","--child-frame-id","odom","--x","0.5","--y","0.5","--yaw","0.786"]
+        arguments=["--frame-id","map","--child-frame-id","odom","--x","1","--y","1","--yaw","0.786"]
     )
     
 
