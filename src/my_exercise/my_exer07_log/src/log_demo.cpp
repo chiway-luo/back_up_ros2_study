@@ -19,8 +19,8 @@ using namespace std::placeholders; //占位符命名空间
 
 class LogDemo :public rclcpp::Node{
 public:
-    LogDemo(std::string str1,std::string str2):Node(str1,str2){
-        RCLCPP_INFO(this->get_logger(),"namesapce: %s node: %s 节点创建成功",str2.c_str(),str1.c_str());
+    LogDemo(std::string str1):Node(str1){
+        RCLCPP_INFO(this->get_logger(),"namesapce:  node: %s 节点创建成功",str1.c_str());
         //创建定时器
         timer_ = this->create_wall_timer(
             1s,
@@ -79,7 +79,7 @@ int main(int argc, char * argv[])
     rclcpp::init(argc,argv);
 
     //调用spin函数,使用自定义类对象指针
-    rclcpp::spin(std::make_shared<LogDemo>("logdemo_node_cpp","my_car"));//node_name,namespace
+    rclcpp::spin(std::make_shared<LogDemo>("logdemo_node_cpp"));//node_name,namespace
 
     //释放资源
     rclcpp::shutdown();

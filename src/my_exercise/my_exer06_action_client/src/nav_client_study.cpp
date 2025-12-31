@@ -27,11 +27,11 @@ using my_exer_interfaces::action::Nav; //使用自定义动作接口
 
 class NavClient :public rclcpp::Node{
 public:
-    NavClient(std::string str1,std::string str2):Node(str1,str2){
+    NavClient(std::string str1):Node(str1){
         if(!rclcpp::ok())return;
-        RCLCPP_INFO(this->get_logger(),"namesapce: %s node: %s 节点创建成功",str2.c_str(),str1.c_str());
+        RCLCPP_INFO(this->get_logger(),"namesapce:  node: %s 节点创建成功",str1.c_str());
         //创建运动客户端对象
-        nav_client_ = rclcpp_action::create_client<Nav>(this,"/my_car/nav_action");
+        nav_client_ = rclcpp_action::create_client<Nav>(this,"nav_action");
     }
 
     //编写发布请求响应
@@ -166,7 +166,7 @@ int main(int argc, char * argv[])
     //初始化ros2客户端
     rclcpp::init(argc,argv);
     //创建节点对象指针
-    auto node = std::make_shared<NavClient>("navclient_node_cpp","my_car");
+    auto node = std::make_shared<NavClient>("navclient_node_cpp");
     //发送目标请求
     node->send_goal(std::atof(argv[1]));
 

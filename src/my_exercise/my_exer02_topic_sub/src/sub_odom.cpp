@@ -21,14 +21,14 @@ using std::placeholders::_1; //占位符命名空间
 
 class SubOdom :public rclcpp::Node{
 public:
-    SubOdom(std::string str1,std::string str2):Node(str1,str2){
+    SubOdom(std::string str1):Node(str1){
         //动态参数
         this->declare_parameter<double>("distance_limited",0.2);
 
         RCLCPP_INFO(this->get_logger(),(str1+"节点创建成功").c_str());
         //创建话题订阅方
         sub_odom = this->create_subscription<nav_msgs::msg::Odometry>(
-            "/odom",
+            "odom",
             1000,
             std::bind(&SubOdom::odom_callback,this,_1)
         );
@@ -88,7 +88,7 @@ int main(int argc, char * argv[])
     rclcpp::init(argc,argv);
 
     //调用spin函数,使用自定义类对象指针
-    rclcpp::spin(std::make_shared<SubOdom>("sub_odom_node_cpp","my_car"));
+    rclcpp::spin(std::make_shared<SubOdom>("sub_odom_node_cpp"));
 
     //释放资源
     rclcpp::shutdown();

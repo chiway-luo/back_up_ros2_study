@@ -31,7 +31,7 @@ std::mutex odom_mutex_; //互斥锁
 
 class NavServer :public rclcpp::Node{
 public:
-    NavServer(std::string str1,std::string str2):Node(str1,str2){
+    NavServer(std::string str1):Node(str1){
         //创建参数客户端对象
         param_client_ = std::make_shared<rclcpp::AsyncParametersClient>(this,"/my_car/pub_vel_node_cpp");
         //连接参数服务端
@@ -45,11 +45,11 @@ public:
             RCLCPP_WARN(rclcpp::get_logger("rclcpp"),"连接参数服务器中...");
         }
 
-        RCLCPP_INFO(this->get_logger(),"namesapce: %s node: %s 节点创建成功",str2.c_str(),str1.c_str());
+        RCLCPP_INFO(this->get_logger(),"namesapce: node: %s 节点创建成功",str1.c_str());
         // 3-1创建动作通信服务端
         action_server_ = rclcpp_action::create_server<Nav>(
             this,
-            "/my_car/nav_action",
+            "nav_action",
             /*
                 rclcpp_action::Server<ActionT>::GoalCallback handle_goal, 
                 rclcpp_action::Server<ActionT>::CancelCallback handle_cancel, 
@@ -69,7 +69,7 @@ public:
         // 3-3向机器人控制节点发布速度消息
         // 3-4订阅里程计消息,计算当前运动距离
         odom_sub_ = this->create_subscription<nav_msgs::msg::Odometry>(
-            "/odom",
+            "odom",
             10,
             std::bind(&NavServer::odom_callback,this,_1)
         );
@@ -212,7 +212,7 @@ int main(int argc, char * argv[])
     rclcpp::init(argc,argv);
 
     //调用spin函数,使用自定义类对象指针
-    rclcpp::spin(std::make_shared<NavServer>("navserver_node_cpp","my_car"));//node_name,namespace
+    rclcpp::spin(std::make_shared<NavServer>("navserver_node_cpp"));//node_name,namespace
 
     //释放资源
     rclcpp::shutdown();

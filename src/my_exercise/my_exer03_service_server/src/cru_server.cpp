@@ -38,9 +38,9 @@ std::mutex odom_mutex_; //互斥锁
 
 class CruServer :public rclcpp::Node{
 public:
-    CruServer(std::string str1,std::string str2):Node(str1,str2){
+    CruServer(std::string str1):Node(str1){
         //创建参数客户端对象
-        param_client_ = std::make_shared<rclcpp::AsyncParametersClient>(this,"/my_car/pub_vel_node_cpp");
+        param_client_ = std::make_shared<rclcpp::AsyncParametersClient>(this,"pub_vel_node_cpp");
         //连接参数服务端
         while (!param_client_->wait_for_service(1s))
         {
@@ -55,13 +55,13 @@ public:
         RCLCPP_INFO(this->get_logger(),(str1+"节点创建成功").c_str());
         //创建服务端对象
         server_ = this->create_service<my_exer_interfaces::srv::Cru>(
-            "/my_car/cru_service",//服务话题名
+            "cru_service",//服务话题名
             std::bind(&CruServer::service_cb,this,_1,_2)
         );
         //创建订阅方对象 里程计
         odom_msg_ = nullptr;//防止野指针
         sub_odom_ = this->create_subscription<nav_msgs::msg::Odometry>(
-            "/odom",
+            "odom",
             10,
             std::bind(&CruServer::sub_swap,this,_1)
         );
@@ -141,7 +141,7 @@ int main(int argc, char * argv[])
     rclcpp::init(argc,argv);
 
     //调用spin函数,使用自定义类对象指针
-    rclcpp::spin(std::make_shared<CruServer>("cruserver_node_cpp","my_car"));
+    rclcpp::spin(std::make_shared<CruServer>("cruserver_node_cpp"));
 
     //释放资源
     rclcpp::shutdown();

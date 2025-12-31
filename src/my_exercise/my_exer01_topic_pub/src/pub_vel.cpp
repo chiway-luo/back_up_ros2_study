@@ -15,18 +15,23 @@
         5.释放资源
 
     新增实现:如果速度没有改变则不发布新消息
+
+    带速度启动方式:
+    ros2 run my_exer01_topic_pub pub_vel --ros-args -p linear_x:=0.5 -p angular_z:=1.0
+
+    默认不带速度作为其他节点的参数注入节点,发送速度指令
 */
 using namespace std::chrono_literals; //使用时间命名空间
 class PubVel :public rclcpp::Node{
 public:
-    PubVel(std::string str1,std::string str2):Node(str1,str2){
+    PubVel(std::string str1):Node(str1){
         //动态参数
         this->declare_parameter<double>("linear_x", 0.0);
         this->declare_parameter<double>("angular_z", 0.0);
 
         RCLCPP_INFO(this->get_logger(),(str1+"节点创建成功").c_str());
         //创建消息发布方
-        pub_vel_ = this->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel",10);
+        pub_vel_ = this->create_publisher<geometry_msgs::msg::Twist>("cmd_vel",10);
         //创建定时器,周期性的发布速度指令
         timer_ = this->create_wall_timer(
             500ms,
@@ -60,7 +65,7 @@ int main(int argc, char * argv[])
     rclcpp::init(argc,argv);
 
     //调用spin函数,使用自定义类对象指针
-    rclcpp::spin(std::make_shared<PubVel>("pub_vel_node_cpp","my_car"));
+    rclcpp::spin(std::make_shared<PubVel>("pub_vel_node_cpp"));
 
     //释放资源
     rclcpp::shutdown();

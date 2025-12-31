@@ -28,10 +28,10 @@ static std::atomic_bool g_stop{false};//全局变量,用于接管Ctrl+C信号
 
 class NavClient :public rclcpp::Node{
 public:
-    NavClient(std::string str1,std::string str2):Node(str1,str2){
-        RCLCPP_INFO(this->get_logger(),"namesapce: %s node: %s 节点创建成功",str2.c_str(),str1.c_str());
+    NavClient(std::string str1):Node(str1){
+        RCLCPP_INFO(this->get_logger(),"namesapce: node: %s 节点创建成功",str1.c_str());
         //创建运动客户端对象
-        nav_client_ = rclcpp_action::create_client<Nav>(this,"/my_car/nav_action");
+        nav_client_ = rclcpp_action::create_client<Nav>(this,"nav_action");
     }
 
     //编写发布请求响应
@@ -162,7 +162,7 @@ int main(int argc, char * argv[])
     std::signal(SIGINT, [](int){ g_stop = true; });
 
     //创建节点类对象
-    auto node = std::make_shared<NavClient>("navclient_node_cpp","my_car");
+    auto node = std::make_shared<NavClient>("navclient_node_cpp");
 
     //发送请求
     node->send_goal(std::atof(argv[1]));

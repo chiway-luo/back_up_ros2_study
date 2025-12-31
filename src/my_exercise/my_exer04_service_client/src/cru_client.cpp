@@ -20,11 +20,11 @@ using std::placeholders::_1; //占位符命名空间
 
 class CruClient :public rclcpp::Node{
 public:
-    CruClient(std::string str1,std::string str2):Node(str1,str2){
-        RCLCPP_INFO(this->get_logger(),"namesapce: %s node: %s 节点创建成功",str2.c_str(),str1.c_str());
+    CruClient(std::string str1):Node(str1){
+        RCLCPP_INFO(this->get_logger(),"namesapce:  node: %s 节点创建成功",str1.c_str());
         //创建客户端对象
         client_cru_ = this->create_client<my_exer_interfaces::srv::Cru>(
-            "/my_car/cru_service"//服务端的服务名称
+            "cru_service"//服务端的服务名称
         );
     }
 
@@ -94,7 +94,7 @@ int main(int argc, char * argv[])
     rclcpp::init(argc,argv);
 
     //调用spin函数,使用自定义类对象指针
-    auto node = std::make_shared<CruClient>("cru_client_node_cpp","my_car");
+    auto node = std::make_shared<CruClient>("cru_client_node_cpp");
     //连接服务端
     if (!node->connect_server())
     {
