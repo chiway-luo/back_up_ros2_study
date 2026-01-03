@@ -54,10 +54,10 @@ public:
         //创建坐标点对象消息指针
         goal_tf_ = std::make_shared<geometry_msgs::msg::TransformStamped>();
         //创建速度消息发布对象
-        pub_ = this->create_publisher<geometry_msgs::msg::Twist>("robot_0/cmd_vel",10);
+        pub_ = this->create_publisher<geometry_msgs::msg::Twist>("cmd_vel",10);
 
         //接收激光雷达数据
-        sub_laser_ = this->create_subscription<sensor_msgs::msg::LaserScan>("/robot_0/base_scan",10,std::bind(&TfListener::obstacle_detect,this,_1));
+        sub_laser_ = this->create_subscription<sensor_msgs::msg::LaserScan>("base_scan",10,std::bind(&TfListener::obstacle_detect,this,_1));
         //创建激光雷达数据指针
         laser_msg_ = std::make_shared<sensor_msgs::msg::LaserScan>();
 

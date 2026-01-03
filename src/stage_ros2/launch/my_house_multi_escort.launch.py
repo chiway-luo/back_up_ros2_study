@@ -15,7 +15,7 @@ def generate_launch_description():
 
     stage_world_arg = DeclareLaunchArgument(
         'world',
-        default_value=TextSubstitution(text='my_house_multi'),
+        default_value=TextSubstitution(text='my_house_multi_escort'),
         description='World file relative to the project world file, without .world')
 
     def stage_world_configuration(context):
@@ -44,6 +44,6 @@ def generate_launch_description():
             name='rviz2',
             arguments=['-d', os.path.join(
             this_directory,
-            'config/rviz/example_2robot.rviz')],
+            'config/rviz/example_3robot_escort.rviz')],
         )
     ])
