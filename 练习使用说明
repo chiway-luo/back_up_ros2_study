@@ -55,3 +55,9 @@ ros2 launch my_exer10_tf_sub car_follow.launch.py
 ros2 launch my_exer10_tf_sub car_escort.launch.py
 
 ###############两个案例均包含exer09launch中的仿真环境和关于map的坐标变换
+
+##########urdf显示案例########################
+两个功能包分别为简略版和完整版
+
+在my_exer11_urdf功能包中集成显示urdf文件功能
+ros2 launch my_exer11_urdf urdf_display_2.launch.py
