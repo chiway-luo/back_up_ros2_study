@@ -23,6 +23,8 @@ ament_target_dependencies(
   "geometry_msgs"
 )
 
+install(DIRECTORY config launch DESTINATION share/${PROJECT_NAME}) #cmake配置
+
 install(TARGETS odom2path
   DESTINATION lib/${PROJECT_NAME})
 
