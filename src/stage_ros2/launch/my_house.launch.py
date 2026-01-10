@@ -36,10 +36,19 @@ def generate_launch_description():
         arguments=["--frame-id","map","--child-frame-id","odom","--x","1","--y","1","--yaw","0.786"]
     )
     
+    # rviz 参数（关键：把 -d 的路径变成可传参）
+    rviz_config_arg = DeclareLaunchArgument(
+        'rviz_config',
+        default_value=TextSubstitution(
+            text=os.path.join(this_directory, 'config', 'rviz', 'example.rviz')
+        ),
+        description='Absolute path to rviz config file'
+    )
 
     return LaunchDescription([
         stage_world_arg,
         stage_world_configuration_arg,
+        rviz_config_arg,
         Node(
             package='stage_ros2',
             executable='stage_ros2',
@@ -52,9 +61,7 @@ def generate_launch_description():
             package='rviz2',
             executable='rviz2',
             name='rviz2',
-            arguments=['-d', os.path.join(
-            this_directory,
-            'config/rviz/example.rviz')],
+            arguments=['-d',LaunchConfiguration('rviz_config')],
         ),
         map_to_odom
     ])
