@@ -1,0 +1,18 @@
+# 全局参数
+name                      sim_world     #仿真环境名称
+interval_sim              100           #仿真环境更新的步长值(毫秒)
+quit_time                 0             #仿真环境运行时间(毫秒),0表示无限运行
+resolution                0.02          #一个像素对应的长度(米)
+show_clock                0             #是否显示仿真时间
+show_clock_interval       100           #仿真时间显示的更新步长(毫秒)
+threads                   0             #仿真环境使用的线程数,0表示自动选择
+background_color          255 255 255   #仿真环境背景颜色(RGB)
+
+# 窗体参数
+
+
+# 地图参数
+
+
+
+# 机器人参数
