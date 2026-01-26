@@ -67,9 +67,14 @@ my_model( pose [ 0 0 0 15 ] bitmap "maps/space_invader.png" )
 # 生成机器人模型
 include "robot/mycar.inc"
 
-my_car(
+my_car( #单个机器人没有命名空间
   name "robot_0"
   color "green"
   pose [ -5 -6 0 0 ] 
 )
 
+# my_car(  #自动添加命名空间 robot_1
+#   name "robot_1"
+#   color "green"
+#   pose [ -5 -2 0 0 ] 
+# )
