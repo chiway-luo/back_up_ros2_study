@@ -53,6 +53,40 @@ def generate_launch_description():
     )
     ld.add_action(stage_ros2_node)
 
+    #启动雷达融合节点(双雷达模型需要开启)
+    """ 
+        <param name="destination_frame" value="base_link"/>
+		<param name="cloud_destination_topic" value="/merged_cloud"/>
+		<param name="scan_destination_topic" value="/scan_multi"/>
+		<param name="laserscan_topics" value ="/scansx /scandx" />
+		<!-- LIST OF THE LASER SCAN TOPICS TO SUBSCRIBE -->
+		<param name="angle_min" value="-3.14"/>
+		<param name="angle_max" value="3.14"/>
+		<param name="angle_increment" value="0.00437"/>
+		<param name="scan_time" value="0.0"/>
+		<param name="range_min" value="0.1"/>
+		<param name="range_max" value="2.0"/>
+    """
+    ira_laser_node = Node(
+        package='ira_laser_tools',
+        executable='laserscan_multi_merger',
+        name='ira_laser_merger_node',
+        parameters=[{
+            'destination_frame': 'base_link',
+            'cloud_destination_topic': '/merged_cloud',
+            'scan_destination_topic': '/scan_multi',
+            'laserscan_topics': "/base_scan1 /base_scan2",
+            'angle_min': -3.14,
+            'angle_max': 3.14,
+            'angle_increment': 0.00437,
+            'scan_time': 0.0,
+            'range_min': 0.1,
+            'range_max': 20.0  #雷达最大测距20米
+        }],
+        output='screen'
+    )
+    ld.add_action(ira_laser_node)
+
     #启动rviz2节点,并加载自定义的rviz配置文件
     rviz2_node = Node(
         package='rviz2',
@@ -61,10 +95,10 @@ def generate_launch_description():
         arguments=['-d', os.path.join(
             get_package_share_directory('demo_stage_sim'),
             'config',
-            'sim.rviz'
+            'sim_multi.rviz' #双雷达 sim_multi.rviz  单雷达是 sim.rviz
         )],
         output='screen'
     )
-    # ld.add_action(rviz2_node)
+    ld.add_action(rviz2_node)
 
     return ld

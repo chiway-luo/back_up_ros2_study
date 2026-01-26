@@ -8,6 +8,7 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(stage_ros2 REQUIRED)
+find_package(ira_laser_tools REQUIRED)
 
 install(DIRECTORY launch config world DESTINATION share/${PROJECT_NAME})
 
