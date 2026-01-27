@@ -1,0 +1,32 @@
+ros2 run ros_gz_bridge parameter_bridge -h
+桥接一组 ROS2 和 Gazebo Transport 的主题和服务。
+
+    parameter_bridge [<topic@ROS2_type@Ign_type> ..]  [<service@ROS2_srv_type[@Ign_req_type@Ign_rep_type]> ..]
+
+topic：第一个 @ 符号将主题名称与消息类型分隔开。
+第一个 @ 符号之后是 ROS 消息类型。
+ROS 消息类型后跟随一个 @、[ 或 ] 符号，其中
+        @  == 双向桥接，
+        [  == 从 Gazebo 到 ROS 的桥接，
+        ]  == 从 ROS 到 Gazebo 的桥接。
+方向符号之后是 Gazebo Transport 消息类型。
+
+service：第一个 @ 符号将服务名称与类型分隔开。
+第一个 @ 符号之后是 ROS 服务类型。
+可选地，您可以包含用 @ 符号分隔的 Gazebo 请求和响应类型。
+仅支持将 Gazebo 服务公开为 ROS 服务，即 ROS 服务会将请求转发给 Gazebo 服务，然后将响应转发回 ROS 客户端。
+
+双向桥接示例：
+        parameter_bridge /chatter@std_msgs/String@ignition.msgs.StringMsg
+
+从 Gazebo 到 ROS 的桥接示例：
+        parameter_bridge /chatter@std_msgs/String[ignition.msgs.StringMsg
+
+从 ROS 到 Gazebo 的桥接示例：
+        parameter_bridge /chatter@std_msgs/String]ignition.msgs.StringMsg
+
+服务桥接：(自动识别 Gazebo 请求和响应类型)
+        parameter_bridge /world/default/control@ros_gz_interfaces/srv/ControlWorld
+或等价地：(指定 gazebo 请求和响应类型)
+        parameter_bridge /world/default/control@ros_gz_interfaces/srv/ControlWorld@ignition.msgs.WorldControl@ignition.msgs.Boolean
+
