@@ -34,6 +34,7 @@ from ament_index_python.packages import get_package_share_directory
 # from launch.substitutions import Command
 """
     在gazebo中加载自定义的仿真环境
+    并生成小车模型
 """
 def generate_launch_description():
     ld = LaunchDescription()
@@ -64,6 +65,33 @@ def generate_launch_description():
         }.items()
     )
     ld.add_action(gazebo_visualize_node)
+
+    #加载小车模型的launch文件
+    mycar_desc_sim_launch = IncludeLaunchDescription(
+        launch_description_source=PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory('mycar_description_detailed'),
+                'launch',
+                'mycar_desc_sim.launch.py'
+            )
+        )
+    )
+    ld.add_action(mycar_desc_sim_launch)
+
+    #调用ros_gz_sim
+    ros_gz_sim_node = Node(
+        package='ros_gz_sim',
+        executable='create',
+        arguments=[
+            '-name', 'mycar_4w',
+            '-topic', '/robot_description',
+            '-x', '-4',
+            # '-y', '0.0',
+            '-z', '0.1', #防止生成模型时与地面嵌合
+        ],
+        output='screen'
+    )
+    ld.add_action(ros_gz_sim_node)
 
     
     return ld

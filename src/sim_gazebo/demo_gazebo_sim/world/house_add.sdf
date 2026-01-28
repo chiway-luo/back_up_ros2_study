@@ -67,7 +67,7 @@
       <self_collide>false</self_collide>
     </model>
     <model name='front_box'>
-      <pose>5 -0 0.5 0 -0 0</pose>
+      <pose>5 -0 0.5 0 0 0</pose>
       <link name='box_link'>
         <inertial>
           <inertia>
@@ -161,7 +161,7 @@
       <self_collide>false</self_collide>
     </model>
     <model name='left_box'>
-      <pose>-0 2.52198 0.500001 -7.9e-05 -0 -0</pose>
+      <pose>0 2.525 0.5 0 -0 -0</pose>
       <link name='box_link'>
         <inertial>
           <inertia>
@@ -208,7 +208,7 @@
       <self_collide>false</self_collide>
     </model>
     <model name='box_2'>
-      <pose>0 -2.52198 0.500001 7.9e-05 0 0</pose>
+      <pose>0 -2.525 0.499999 0 -0 0</pose>
       <link name='box_link'>
         <inertial>
           <inertia>
@@ -268,10 +268,10 @@
             <specular>1 1 1 1</specular>
             <pbr>
               <metal>
-                <albedo_map>materials/textures/Bathtub_Albedo.jpg</albedo_map>
-                <normal_map>materials/textures/Bathtub_Normal.png</normal_map>
-                <roughness_map>materials/textures/Bathtub_Roughness.jpg</roughness_map>
-                <metalness_map>materials/textures/Bathtub_Metalness.jpg</metalness_map>
+                <albedo_map>model://Bathtub/materials/textures/Bathtub_Albedo.jpg</albedo_map>
+                <normal_map>model://Bathtub/materials/textures/Bathtub_Normal.png</normal_map>
+                <roughness_map>model://Bathtub/materials/textures/Bathtub_Roughness.jpg</roughness_map>
+                <metalness_map>model://Bathtub/materials/textures/Bathtub_Metalness.jpg</metalness_map>
               </metal>
             </pbr>
           </material>
@@ -358,9 +358,9 @@
             <specular>1 1 1 1</specular>
             <pbr>
               <metal>
-                <albedo_map>materials/textures/Wood_Albedo.png</albedo_map>
-                <normal_map>materials/textures/Wood_Normal.png</normal_map>
-                <roughness_map>materials/textures/Wood_Roughness.png</roughness_map>
+                <albedo_map>model://Vanity/materials/textures/Wood_Albedo.png</albedo_map>
+                <normal_map>model://Vanity/materials/textures/Wood_Normal.png</normal_map>
+                <roughness_map>model://Vanity/materials/textures/Wood_Roughness.png</roughness_map>
               </metal>
             </pbr>
           </material>
@@ -381,8 +381,8 @@
             <specular>1 1 1 1</specular>
             <pbr>
               <metal>
-                <albedo_map>materials/textures/Counter_Albedo.png</albedo_map>
-                <normal_map>materials/textures/Counter_Normal.png</normal_map>
+                <albedo_map>model://Vanity/materials/textures/Counter_Albedo.png</albedo_map>
+                <normal_map>model://Vanity/materials/textures/Counter_Normal.png</normal_map>
                 <roughness>0.2</roughness>
               </metal>
             </pbr>
@@ -582,9 +582,9 @@
             <specular>1 1 1 1</specular>
             <pbr>
               <metal>
-                <albedo_map>materials/textures/Wood_Albedo.png</albedo_map>
-                <normal_map>materials/textures/Wood_Normal.png</normal_map>
-                <roughness_map>materials/textures/Wood_Roughness.png</roughness_map>
+                <albedo_map>model://Vanity/materials/textures/Wood_Albedo.png</albedo_map>
+                <normal_map>model://Vanity/materials/textures/Wood_Normal.png</normal_map>
+                <roughness_map>model://Vanity/materials/textures/Wood_Roughness.png</roughness_map>
               </metal>
             </pbr>
           </material>
@@ -605,8 +605,8 @@
             <specular>1 1 1 1</specular>
             <pbr>
               <metal>
-                <albedo_map>materials/textures/Counter_Albedo.png</albedo_map>
-                <normal_map>materials/textures/Counter_Normal.png</normal_map>
+                <albedo_map>model://Vanity/materials/textures/Counter_Albedo.png</albedo_map>
+                <normal_map>model://Vanity/materials/textures/Counter_Normal.png</normal_map>
                 <roughness>0.2</roughness>
               </metal>
             </pbr>
@@ -801,9 +801,9 @@
             <specular>1 1 1 1</specular>
             <pbr>
               <metal>
-                <albedo_map>materials/textures/Desk_Albedo.png</albedo_map>
-                <normal_map>materials/textures/Desk_Normal.png</normal_map>
-                <roughness_map>materials/textures/Desk_Roughness.png</roughness_map>
+                <albedo_map>model://Office Desk/materials/textures/Desk_Albedo.png</albedo_map>
+                <normal_map>model://Office Desk/materials/textures/Desk_Normal.png</normal_map>
+                <roughness_map>model://Office Desk/materials/textures/Desk_Roughness.png</roughness_map>
               </metal>
             </pbr>
           </material>
@@ -1018,7 +1018,7 @@
         </inertial>
         <enable_wind>false</enable_wind>
       </link>
-      <pose>3.53919 -1.86883 0 0 -0 1.57</pose>
+      <pose>3.54 -1.9 0 0 -0 1.57</pose>
       <self_collide>false</self_collide>
     </model>
     <model name='Bed'>
@@ -1035,9 +1035,9 @@
             <specular>1 1 1 1</specular>
             <pbr>
               <metal>
-                <albedo_map>materials/textures/Bed_Albedo.png</albedo_map>
-                <normal_map>materials/textures/Bed_Normal.png</normal_map>
-                <roughness_map>materials/textures/Bed_Roughness.png</roughness_map>
+                <albedo_map>model://Bed/materials/textures/Bed_Albedo.png</albedo_map>
+                <normal_map>model://Bed/materials/textures/Bed_Normal.png</normal_map>
+                <roughness_map>model://Bed/materials/textures/Bed_Roughness.png</roughness_map>
               </metal>
             </pbr>
           </material>
@@ -1166,7 +1166,7 @@
         </inertial>
         <enable_wind>false</enable_wind>
       </link>
-      <pose>0 -1.8 0.00012 -0 0 1.57</pose>
+      <pose>0 -1.9 0.000119 -0 0 1.57</pose>
       <static>false</static>
       <self_collide>false</self_collide>
     </model>
@@ -1189,9 +1189,9 @@
             <specular>1 1 1 1</specular>
             <pbr>
               <metal>
-                <albedo_map>materials/textures/Wood_Albedo.png</albedo_map>
-                <normal_map>materials/textures/Wood_Normal.png</normal_map>
-                <roughness_map>materials/textures/Wood_Roughness.png</roughness_map>
+                <albedo_map>model://Dining Table/materials/textures/Wood_Albedo.png</albedo_map>
+                <normal_map>model://Dining Table/materials/textures/Wood_Normal.png</normal_map>
+                <roughness_map>model://Dining Table/materials/textures/Wood_Roughness.png</roughness_map>
               </metal>
             </pbr>
           </material>
@@ -1400,6 +1400,11 @@
       <pose>0 1.8 0 0 -0 1.57</pose>
       <self_collide>false</self_collide>
     </model>
+    <include>
+      <uri>file://ign_models/Pickup</uri>
+      <name>pickup</name>
+      <pose>0 -4 0 0 -0 0</pose>
+    </include>
     <light name='sun' type='directional'>
       <pose>0 0 10 0 -0 0</pose>
       <cast_shadows>true</cast_shadows>
