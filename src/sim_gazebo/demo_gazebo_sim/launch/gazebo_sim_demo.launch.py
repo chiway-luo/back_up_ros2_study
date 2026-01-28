@@ -59,7 +59,7 @@ def generate_launch_description():
                 'gz_sim.launch.py'
             )
         ),
-        launch_arguments={
+        launch_arguments={# -v 是指日志等级 4 是最高等级的日志 -r 是指加载的sdf模型文件路径 
             'gz_args': f"-v 4 -r {os.path.join(demo_gazebo_sim_path,'world','visualize_lidar.sdf')}"
             # 'gz_args': f"-v 4 -r {os.path.join(get_package_share_directory('demo_gazebo_sim'),'world','visualize_lidar.sdf')}"
         }.items()

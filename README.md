@@ -27,3 +27,15 @@ git clone https://github.com/damuxt/stage_ros2.git
 ```
 ros2 launch stage_ros2 my_house.launch.py
 ```
+
+## install ignition gazebo
+Ignition Gazebo 是不依赖于ROS2的一个独立的项目，可以独自安装。但是如果安装了ROS2，在ROS2存储库中已经集成了对应版本的 Ignition Gazebo，可以调用如下指令直接安装：
+```
+sudo apt install ros-${ROS_DISTRO}-ros-gz
+```
+
+### 运行方式
+```
+ign gazebo
+ros2 launch ros_gz_sim gz_sim.launch.py
+```
