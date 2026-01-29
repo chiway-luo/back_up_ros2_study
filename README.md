@@ -39,3 +39,11 @@ sudo apt install ros-${ROS_DISTRO}-ros-gz
 ign gazebo
 ros2 launch ros_gz_sim gz_sim.launch.py
 ```
+
+### 仿真完成案例启动
+```
+ros2 launch demo_gazebo_sim gazebo_sim_car.launch.py 
+```
+```
+ros2 run teleop_twist_keyboard teleop_twist_keyboard 
+```

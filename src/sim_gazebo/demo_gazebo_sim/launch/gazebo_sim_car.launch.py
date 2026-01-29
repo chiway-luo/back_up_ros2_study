@@ -60,7 +60,7 @@ def generate_launch_description():
         ),
         launch_arguments={# -v 是指日志等级 4 是最高等级的日志 -r 是指加载的sdf模型文件路径 
             # 'gz_args': f"-v 4 -r {os.path.join(demo_gazebo_sim_path,'world','house.sdf')}" #原始墙壁模型
-            'gz_args': f"-v 4 -r {os.path.join(demo_gazebo_sim_path,'world','house_add.sdf')}" #添加家具的房子模型
+            'gz_args': f"-r {os.path.join(demo_gazebo_sim_path,'world','house_add.sdf')}" #添加家具的房子模型
             # 'gz_args': f"-v 4 -r {os.path.join(get_package_share_directory('demo_gazebo_sim'),'world','visualize_lidar.sdf')}"
         }.items()
     )
@@ -92,6 +92,62 @@ def generate_launch_description():
         output='screen'
     )
     ld.add_action(ros_gz_sim_node)
+
+    #建立仿真环境与ros2的桥接 
+    #转换: 速度 里程计 tf 关节状态 时钟
+    # ign_gazebo 使用的话题
+    ros_bridge_node = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        arguments=[
+            '/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist',#速度
+            '/model/mycar_4w/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry',#odom 里程计消息
+            '/model/mycar_4w/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V',#tf消息
+            '/world/empty/model/mycar_4w/joint_state@sensor_msgs/msg/JointState[gz.msgs.Model',#关节状态
+            '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock', #时钟
+
+            '/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan', #单线激光雷达 
+            '/scan/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked', #多线激光雷达 
+            '/depth_camera@sensor_msgs/msg/Image[gz.msgs.Image', #深度相机图像
+            '/depth_camera/points@sensor_msgs/msg/PointCloud2[ignition.msgs.PointCloudPacked', #深度相机点云数据
+            '/image_raw@sensor_msgs/msg/Image[gz.msgs.Image', #图像参数
+            "/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo",#相机参数
+        ],
+        parameters=[{"qos_overrides./model/mycar.subscriber.reliability": "reliable"}],
+        remappings=[
+            ('/model/mycar_4w/odometry', '/odom'),
+            ('/model/mycar_4w/tf', '/tf'),
+            ('/world/empty/model/mycar_4w/joint_state', '/joint_states'),
+        ]
+    )
+    ld.add_action(ros_bridge_node)
+
+    #启动rviz2
+    rviz2_node = Node(
+        package='rviz2',
+        executable='rviz2',
+        arguments=['-d', os.path.join(demo_gazebo_sim_path,'rviz','ign_sim_car.rviz')],
+        output='screen'
+    )
+    ld.add_action(rviz2_node)
+
+    #因为 depth_camera/points 坐标系没发生改变 mycar_4w/base_footprint/depth_camera 发布static 坐标系变换与 camera
+    static_laser_tf = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='static_laser_tf',
+        arguments=[
+            '--frame-id', 'camera',
+            '--child-frame-id', 'mycar_4w/base_footprint/depth_camera',
+            '--x', '0.0',
+            '--y', '0.0',
+            '--z', '0.0',
+            '--roll', '0.0',
+            '--pitch', '0.0',
+            '--yaw', '0.0'
+        ]
+    )
+    ld.add_action(static_laser_tf)
 
     
     return ld

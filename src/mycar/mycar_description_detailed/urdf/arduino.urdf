@@ -265,7 +265,14 @@
     <axis
       xyz="0 0 0" />
   </joint>
-
+  <!-- 控制机器人运动 -->
+  <!-- 运动插件1 生成joint_state_publisher 的插件 -->
+   <gazebo>
+    <plugin filename="ignition-gazebo-joint-state-publisher-system"
+      name="ignition::gazebo::systems::JointStatePublisher">
+    </plugin>
+  </gazebo>
+  <!-- 运动插件2 生成运动控制器的插件 -->
   <gazebo>
       <plugin filename="libignition-gazebo-diff-drive-system.so"
         name="ignition::gazebo::systems::DiffDrive">
@@ -273,7 +280,7 @@
         <right_joint>right_joint</right_joint>
         <wheel_separation>0.2097</wheel_separation>
         <wheel_radius>0.03415</wheel_radius>
-        <odom_publish_frequency>30</odom_publish_frequency>
+        <odom_publish_frequency>20</odom_publish_frequency>
         <frame_id>odom</frame_id>
         <child_frame_id>base_footprint</child_frame_id>
         <topic>/cmd_vel</topic>
@@ -290,11 +297,7 @@
   </gazebo>
 
   <!-- 关节状态发布 -->
-  <gazebo>
-    <plugin filename="ignition-gazebo-joint-state-publisher-system"
-      name="ignition::gazebo::systems::JointStatePublisher">
-    </plugin>
-  </gazebo>
+  
   <gazebo reference="camera" >
     <sensor name="cam_link" type="camera">
       <update_rate>10.0</update_rate>
