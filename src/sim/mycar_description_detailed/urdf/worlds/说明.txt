@@ -1,0 +1,6 @@
+cp -r /usr/share/ignition/ignition-gazebo6/worlds src/mycar/mycar_description_detailed/urdf/
+
+复制urdf包含ign_joint实现实例
+
+在改文件夹中搜索 lidar 找到相关实现 复制插件名称进入urdf文件
+lidar 
