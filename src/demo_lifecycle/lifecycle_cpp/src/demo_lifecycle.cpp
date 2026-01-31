@@ -7,6 +7,19 @@
         3.创建一个生命周期节点类
         4.执行生命周期节点对象
         5.释放资源
+
+    ros2 run lifecycle_cpp demo_lifecycle_cpp
+
+    ros2 lifecycle nodes 查看当前系统中所有的生命周期节点
+
+    ros2 lifecycle list /node_name  查看节点的生命周期状态 可以进入的状态
+    改变生命周期指令
+    ros2 lifecycle set /node_name configure  配置节点
+    ros2 lifecycle set /node_name activate   激活节点
+    ros2 lifecycle set /node_name deactivate 停用节点
+    ros2 lifecycle set /node_name cleanup    清空节点
+
+    ros2 lifecycle set /node_name shutdown   销毁节点
 */
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
@@ -27,26 +40,28 @@ public:
     }
     rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn on_activate(const rclcpp_lifecycle::State & previous_state){
         (void)previous_state;
-        RCLCPP_INFO(this->get_logger(),"生命周期节点被激活---------------");
+        RCLCPP_INFO(this->get_logger(),"配置-->>激活---------------");
         return rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn::SUCCESS;
     }
     rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn on_deactivate(const rclcpp_lifecycle::State & previous_state){
         (void)previous_state;
-        RCLCPP_INFO(this->get_logger(),"生命周期节点被停用---------------");
+        RCLCPP_INFO(this->get_logger(),"激活-->>停用(待激活)---------------");
         return rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn::SUCCESS;
     }
     rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn on_cleanup(const rclcpp_lifecycle::State & previous_state){
         (void)previous_state;
-        RCLCPP_INFO(this->get_logger(),"生命周期节点被清空---------------");
+        RCLCPP_INFO(this->get_logger(),"停用(待激活)-->>清空(待配置)---------------");
         return rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn::SUCCESS;
     }
     rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn on_shutdown(const rclcpp_lifecycle::State & previous_state){
         (void)previous_state;
         RCLCPP_INFO(this->get_logger(),"生命周期节点被销毁---------------");
+        // rclcpp::shutdown();
         return rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn::SUCCESS;
     }
 
 private:
+
 };
 
 int main(int argc, char **argv){
@@ -58,4 +73,9 @@ int main(int argc, char **argv){
 
     //执行生命周期节点对象
     rclcpp::spin(my_node->get_node_base_interface());
+
+    //释放资源
+    rclcpp::shutdown();
+
+    return 0;
 }
