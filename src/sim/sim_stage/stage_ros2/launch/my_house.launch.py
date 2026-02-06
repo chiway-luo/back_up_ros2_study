@@ -8,11 +8,14 @@ from launch.substitutions import LaunchConfiguration, TextSubstitution
 from launch.actions import DeclareLaunchArgument, OpaqueFunction, SetLaunchConfiguration
 from launch_ros.actions import Node
 
+from launch.actions import IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+
 
 def generate_launch_description():
 
     this_directory = get_package_share_directory('stage_ros2')
-    use_sim_time = LaunchConfiguration('use_sim_time',  default='true')
+    use_sim_time = DeclareLaunchArgument('use_sim_time',  default_value='True')
 
     stage_world_arg = DeclareLaunchArgument(
         'world',
@@ -28,7 +31,26 @@ def generate_launch_description():
 
     stage_world_configuration_arg = OpaqueFunction(function=stage_world_configuration)
 
+    # 添加map和amcl的launch文件
+    sim_local_launch = IncludeLaunchDescription(
+        launch_description_source=PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory('sim_localization'),
+                'launch',
+                'sim_loca.launch.py'
+            )
+        ),
+        launch_arguments={
+            'use_sim_time': LaunchConfiguration('use_sim_time'),
+            'yaml_filename': 'map/stage_map.yaml'
+        }.items()
+    )
+    
+
     return LaunchDescription([
+        use_sim_time,
+        sim_local_launch,
+
         stage_world_arg,
         stage_world_configuration_arg,
         Node(

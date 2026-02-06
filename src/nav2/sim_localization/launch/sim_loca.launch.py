@@ -43,6 +43,12 @@ def generate_launch_description():
             default_value='True'
         )
     )
+    ld.add_action(
+        DeclareLaunchArgument(
+            'yaml_filename',
+            default_value='map/ign_map.yaml'
+        )
+    )
 
     # 加载地图数据
     map_server_node = IncludeLaunchDescription(
@@ -55,7 +61,7 @@ def generate_launch_description():
         ),
         launch_arguments={
             'use_sim_time': LaunchConfiguration('use_sim_time'),
-            'yaml_filename': 'map/ign_map.yaml'
+            'yaml_filename': LaunchConfiguration('yaml_filename')
         }.items()
     )
     ld.add_action(map_server_node)
