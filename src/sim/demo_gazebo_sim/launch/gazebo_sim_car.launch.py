@@ -13,8 +13,8 @@ import os
 # from launch.actions import ExecuteProcess
 # from launch.substitutions import FindExecutable   #FindExecutable(name="ros2")
 # 参数声明与获取-----------------
-# from launch.actions import DeclareLaunchArgument
-# from launch.substitutions import LaunchConfiguration
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
 # from launch.conditions import IfCondition #判断是否执行
 # from launch.conditions import UnlessCondition #取反
 # from launch.substitutions import PythonExpression #运行时计算表达式
@@ -42,6 +42,14 @@ def generate_launch_description():
     ros_gz_sim_path = get_package_share_directory('ros_gz_sim')
     #获取demo_gazebo_sim功能包路径 
     demo_gazebo_sim_path = get_package_share_directory('demo_gazebo_sim')
+
+
+    ld.add_action(
+        DeclareLaunchArgument(
+            'use_sim_time',
+            default_value='True'
+        )
+    )
 
     # 启动仿真环境   ros2 launch ros_gz_sim gz_sim.launch.py gz_args:="-v 4 -r visualize_lidar.sdf"
     """
@@ -148,6 +156,21 @@ def generate_launch_description():
         ]
     )
     ld.add_action(static_laser_tf)
+
+    # 添加map和amcl的launch文件
+    sim_local_launch = IncludeLaunchDescription(
+        launch_description_source=PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory('sim_localization'),
+                'launch',
+                'sim_loca.launch.py'
+            )
+        ),
+        launch_arguments={
+            'use_sim_time': LaunchConfiguration('use_sim_time')
+        }.items()
+    )
+    ld.add_action(sim_local_launch)
 
     
     return ld

@@ -15,6 +15,10 @@ Panels:
         - /Image_depth1
         - /Image_depth1/Topic1
         - /PointCloud2_depth1
+        - /Map1
+        - /Map1/Topic1
+        - /ParticleCloud1
+        - /ParticleCloud1/Topic1
       Splitter Ratio: 0.5
     Tree Height: 163
   - Class: rviz_common/Selection
@@ -73,6 +77,8 @@ Visualization Manager:
           Value: true
         left_rear_link:
           Value: true
+        map:
+          Value: true
         mycar_4w/base_footprint/depth_camera:
           Value: true
         odom:
@@ -87,6 +93,8 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
+        map:
+          {}
         odom:
           base_footprint:
             base_link:
@@ -340,11 +348,48 @@ Visualization Manager:
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
+    - Alpha: 0.699999988079071
+      Class: rviz_default_plugins/Map
+      Color Scheme: map
+      Draw Behind: false
+      Enabled: true
+      Name: Map
+      Topic:
+        Depth: 5
+        Durability Policy: Transient Local
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /map
+      Update Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /map_updates
+      Use Timestamp: false
+      Value: true
+    - Alpha: 1
+      Class: nav2_rviz_plugins/ParticleCloud
+      Color: 255; 25; 0
+      Enabled: true
+      Max Arrow Length: 0.30000001192092896
+      Min Arrow Length: 0.019999999552965164
+      Name: ParticleCloud
+      Shape: Arrow (Flat)
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Best Effort
+        Value: /particle_cloud
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: odom
-    Frame Rate: 20
+    Fixed Frame: map
+    Frame Rate: 5
   Name: root
   Tools:
     - Class: rviz_default_plugins/Interact
@@ -386,25 +431,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 5.938024997711182
+      Distance: 7.96566104888916
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.6380845904350281
-        Y: 0.110264353454113
-        Z: 0.71345454454422
+        X: 2.411142349243164
+        Y: -0.18257001042366028
+        Z: 1.4714361429214478
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.4303975999355316
+      Pitch: 0.8747963905334473
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 2.6403968334198
+      Yaw: 2.6503961086273193
     Saved: ~
 Window Geometry:
   Displays:
@@ -426,5 +471,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1200
-  X: 1363
-  Y: 37
+  X: 175
+  Y: 58
