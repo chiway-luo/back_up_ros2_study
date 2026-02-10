@@ -1,0 +1,26 @@
+<!--
+  This Behavior Tree replans the global path periodically at 1 Hz.
+  简单的行为树,只规划路径,无其他功能
+-->
+
+<!-- <root main_tree_to_execute="MainTree">
+  <BehaviorTree ID="MainTree">
+    <PipelineSequence name="NavigateWithReplanning">
+      <RateController hz="1.0">
+        <ComputePathToPose goal="{goal}" path="{path}" planner_id="GridBased"/>
+      </RateController>
+    </PipelineSequence>
+  </BehaviorTree>
+</root> -->
+
+<!-- 运动控制 + 路径规划 -->
+<root main_tree_to_execute="MainTree">
+  <BehaviorTree ID="MainTree">
+    <PipelineSequence name="NavigateWithReplanning">
+      <RateController hz="1.0">
+        <ComputePathToPose goal="{goal}" path="{path}" planner_id="GridBased"/>
+      </RateController>
+      <FollowPath path="{path}"  controller_id="FollowPath"/>
+    </PipelineSequence>
+  </BehaviorTree>
+</root>

@@ -31,19 +31,14 @@ def generate_launch_description():
 
     stage_world_configuration_arg = OpaqueFunction(function=stage_world_configuration)
 
-    # 添加map和amcl的launch文件
     sim_local_launch = IncludeLaunchDescription(
         launch_description_source=PythonLaunchDescriptionSource(
             os.path.join(
-                get_package_share_directory('sim_localization'),
+                get_package_share_directory('sim_navigation2'),
                 'launch',
-                'sim_loca.launch.py'
+                'bringup.launch.py'
             )
-        ),
-        launch_arguments={
-            'use_sim_time': LaunchConfiguration('use_sim_time'),
-            'yaml_filename': 'map/stage_map.yaml'
-        }.items()
+        )
     )
     
 
