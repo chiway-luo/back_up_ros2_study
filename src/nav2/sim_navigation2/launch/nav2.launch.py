@@ -50,7 +50,7 @@ from ament_index_python.packages import get_package_share_directory
             运动控制节点依赖于局部代价地图
 
         4.恢复行为实现
-            当机器人陷入困境时,自我脱困
+            当机器人陷入困境时,自行脱困
 """
 def generate_launch_description():
     ld = LaunchDescription()
@@ -78,6 +78,10 @@ def generate_launch_description():
     controller_yaml = os.path.join(this_pkg_path, 'params', 'controller.yaml')
     ld.add_action(DeclareLaunchArgument('controller_yaml', default_value=controller_yaml))
 
+    # 恢复行为节点文件
+    behavior_yaml = os.path.join(this_pkg_path, 'params', 'behavior.yaml')
+    ld.add_action(DeclareLaunchArgument('behavior_yaml', default_value=behavior_yaml))
+
 
     # 规划器节点 依赖于全局代价地图
     planner_server_node = Node(
@@ -91,6 +95,18 @@ def generate_launch_description():
     )
     ld.add_action(planner_server_node)
 
+    # 恢复行为节点
+    behavior_server_node = Node(
+        package='nav2_behaviors',
+        executable='behavior_server',
+        name='behavior_server',
+        parameters=[
+            {'use_sim_time': LaunchConfiguration('use_sim_time')},
+             #加载yaml文件
+            LaunchConfiguration('behavior_yaml')
+        ]
+    )
+    ld.add_action(behavior_server_node)
     
 
     # nav2_bt_navigator bt_navigator 节点 行为树服务器
@@ -138,7 +154,8 @@ def generate_launch_description():
                 'planner_server', 
                 'controller_server', 
                 # 'recoveries_server', 
-                'bt_navigator_node' 
+                'bt_navigator_node',
+                'behavior_server'
             ]
         }]
     )
