@@ -51,9 +51,6 @@ from ament_index_python.packages import get_package_share_directory
 
         4.恢复行为实现
             当机器人陷入困境时,自行脱困
-
-        5.路点跟踪
-            设置一系列的目标点集合，机器人可以一次到达这些目标点
 """
 def generate_launch_description():
     ld = LaunchDescription()
@@ -85,10 +82,6 @@ def generate_launch_description():
     behavior_yaml = os.path.join(this_pkg_path, 'params', 'behavior.yaml')
     ld.add_action(DeclareLaunchArgument('behavior_yaml', default_value=behavior_yaml))
 
-    # 路点跟踪yaml文件
-    waypoint_yaml = os.path.join(this_pkg_path, 'params', 'waypoint.yaml')
-    ld.add_action(DeclareLaunchArgument('waypoint_yaml', default_value=waypoint_yaml))
-
 
     # 规划器节点 依赖于全局代价地图
     planner_server_node = Node(
@@ -115,18 +108,6 @@ def generate_launch_description():
     )
     ld.add_action(behavior_server_node)
     
-    # 路点跟踪节点
-    waypoint_node = Node(
-        package='nav2_waypoint_follower',
-        executable='waypoint_follower',
-        name='waypoint_follower',
-        parameters=[
-            {'use_sim_time': LaunchConfiguration('use_sim_time')},
-            #加载yaml文件
-            LaunchConfiguration('waypoint_yaml')
-        ]
-    )
-    ld.add_action(waypoint_node)
 
     # nav2_bt_navigator bt_navigator 节点 行为树服务器
     bt_navigator_node = Node(
@@ -174,8 +155,7 @@ def generate_launch_description():
                 'controller_server', 
                 # 'recoveries_server', 
                 'bt_navigator_node',
-                'behavior_server',
-                'waypoint_follower'
+                'behavior_server'
             ]
         }]
     )

@@ -62,6 +62,7 @@ def generate_launch_description():
             name='rviz2',
             arguments=['-d', os.path.join(
             this_directory,
-            'config/rviz/example.rviz')],
+            # 'config/rviz/example.rviz')],
+            'config/rviz/nav2_default_view.rviz')],
         )
     ])
