@@ -54,12 +54,6 @@ from ament_index_python.packages import get_package_share_directory
 
         5.路点跟踪
             设置一系列的目标点集合，机器人可以一次到达这些目标点
-
-        6.平滑路径
-            平滑路径，使机器人运行更流畅，安全且可以减少硬件磨损
-
-        7.速度平滑
-            平滑速度，使机器人运行更流畅，安全可以减少硬件磨损
 """
 def generate_launch_description():
     ld = LaunchDescription()
@@ -95,13 +89,6 @@ def generate_launch_description():
     waypoint_yaml = os.path.join(this_pkg_path, 'params', 'waypoint.yaml')
     ld.add_action(DeclareLaunchArgument('waypoint_yaml', default_value=waypoint_yaml))
 
-    # 路径平滑yaml文件
-    smoother_yaml = os.path.join(this_pkg_path, 'params', 'smoother.yaml')
-    ld.add_action(DeclareLaunchArgument('smoother_yaml', default_value=smoother_yaml))
-    
-    # 速度平滑yaml文件
-    velocity_smoother_yaml = os.path.join(this_pkg_path, 'params', 'velocity_smoother.yaml')
-    ld.add_action(DeclareLaunchArgument('velocity_smoother_yaml', default_value=velocity_smoother_yaml))
 
     # 规划器节点 依赖于全局代价地图
     planner_server_node = Node(
@@ -141,43 +128,6 @@ def generate_launch_description():
     )
     ld.add_action(waypoint_node)
 
-    # 路径平滑节点
-    smoother_node = Node(
-        package='nav2_smoother',
-        executable='smoother_server',
-        name='smoother_server',
-        parameters=[
-            {'use_sim_time': LaunchConfiguration('use_sim_time')},
-            #加载yaml文件
-            LaunchConfiguration('smoother_yaml')
-        ]
-    )
-    ld.add_action(smoother_node)
-
-    # 速度平滑
-    velocity_smoother_node = Node(
-        package='nav2_velocity_smoother',
-        executable='velocity_smoother',
-        name='velocity_smoother',
-        parameters=[
-            {"use_sim_time": LaunchConfiguration('use_sim_time')},
-            # 加载yaml文件
-            LaunchConfiguration('velocity_smoother_yaml')
-        ],
-        # 订阅cmd_vel话题
-        # 发布smooth_cmd_vel话题
-        remappings=[
-            ('cmd_vel', 'raw_cmd_vel'),
-            ('cmd_vel_smoothed', 'cmd_vel')
-        ]
-    )
-    ld.add_action(velocity_smoother_node)
-
-
-
-
-    #############################################
-
     # nav2_bt_navigator bt_navigator 节点 行为树服务器
     bt_navigator_node = Node(
         package='nav2_bt_navigator',
@@ -203,11 +153,6 @@ def generate_launch_description():
             {'use_sim_time': LaunchConfiguration('use_sim_time')},
             #加载yaml文件
             LaunchConfiguration('controller_yaml')
-        ],
-        #controller发布的速度话题要被速度平滑器处理,需要将controller_server节点的输出话题
-        # 重定向到velocity_smoother节点的输入,可以通过remappings参数实现
-        remappings=[
-            ('cmd_vel', 'raw_cmd_vel')
         ]
     )
     ld.add_action(controller_server_node)
@@ -230,9 +175,7 @@ def generate_launch_description():
                 # 'recoveries_server', 
                 'bt_navigator_node',
                 'behavior_server',
-                'waypoint_follower',
-                'smoother_server',
-                'velocity_smoother'
+                'waypoint_follower'
             ]
         }]
     )

@@ -5,15 +5,16 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
+        - /RobotModel1
         - /TF1/Frames1
         - /TF1/Tree1
         - /Map1
-        - /Map1/Status1
         - /Map1/Topic1
         - /Global Planner1
         - /Global Planner1/Global Costmap1
         - /Controller1
         - /Controller1/Local Costmap1
+        - /Path1
       Splitter Ratio: 0.5861111283302307
     Tree Height: 448
   - Class: rviz_common/Selection
@@ -177,7 +178,7 @@ Visualization Manager:
       Value: true
     - Alpha: 1
       Class: rviz_default_plugins/Map
-      Color Scheme: costmap
+      Color Scheme: map
       Draw Behind: true
       Enabled: true
       Name: Map
@@ -282,7 +283,7 @@ Visualization Manager:
             Filter size: 10
             History Policy: Keep Last
             Reliability Policy: Reliable
-            Value: /plan
+            Value: /received_global_plan
           Value: true
         - Alpha: 1
           Autocompute Intensity Bounds: true
@@ -363,17 +364,17 @@ Visualization Manager:
           Enabled: true
           Head Diameter: 0.30000001192092896
           Head Length: 0.20000000298023224
-          Length: 0.30000001192092896
+          Length: 0.10000000149011612
           Line Style: Lines
-          Line Width: 0.029999999329447746
+          Line Width: 0.5
           Name: Local Plan
           Offset:
             X: 0
             Y: 0
             Z: 0
           Pose Color: 255; 85; 255
-          Pose Style: None
-          Radius: 0.029999999329447746
+          Pose Style: Axes
+          Radius: 0.05000000074505806
           Shaft Diameter: 0.10000000149011612
           Shaft Length: 0.10000000149011612
           Topic:
@@ -382,7 +383,7 @@ Visualization Manager:
             Filter size: 10
             History Policy: Keep Last
             Reliability Policy: Reliable
-            Value: /local_plan
+            Value: /transformed_global_plan
           Value: true
         - Class: rviz_default_plugins/MarkerArray
           Enabled: false
@@ -509,27 +510,6 @@ Visualization Manager:
         Reliability Policy: Reliable
         Value: /waypoints
       Value: true
-    - Alpha: 0.699999988079071
-      Class: rviz_default_plugins/Map
-      Color Scheme: raw
-      Draw Behind: false
-      Enabled: false
-      Name: local_Map
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /local_costmap/costmap
-      Update Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /local_costmap/costmap_updates
-      Use Timestamp: false
-      Value: false
     - Alpha: 1
       Buffer Length: 1
       Class: rviz_default_plugins/Path
@@ -562,7 +542,7 @@ Visualization Manager:
   Global Options:
     Background Color: 48; 48; 48
     Fixed Frame: map
-    Frame Rate: 30
+    Frame Rate: 20
   Name: root
   Tools:
     - Class: rviz_default_plugins/MoveCamera
@@ -596,25 +576,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/ThirdPersonFollower
-      Distance: 24.089826583862305
+      Distance: 17.163143157958984
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 6.658381938934326
-        Y: -6.469707489013672
-        Z: 1.1761812857002951e-07
+        X: 4.354362487792969
+        Y: -1.3612598180770874
+        Z: 2.3190659703686833e-07
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.1347965002059937
+      Pitch: 1.2147963047027588
       Target Frame: <Fixed Frame>
       Value: ThirdPersonFollower (rviz_default_plugins)
-      Yaw: 3.967390775680542
+      Yaw: 3.6923890113830566
     Saved: ~
 Window Geometry:
   Displays:
