@@ -13,6 +13,9 @@
 /global_costmap:
   global_costmap:
     ros__parameters:
+      rolling_window: true
+      width: 40
+      height: 40
       update_frequency: 1.0
       publish_frequency: 1.0
       global_frame: map

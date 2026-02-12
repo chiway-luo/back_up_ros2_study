@@ -42,7 +42,7 @@ def generate_launch_description():
     ld.add_action(DeclareLaunchArgument('use_sim_time', default_value='True'))
     ld.add_action(DeclareLaunchArgument('map_filename', default_value='map/stage_map.yaml'))
 
-    # 包含定位launch文件
+    # 包含定位launch文件 amcl和map文件定位
     amcl_and_map = IncludeLaunchDescription(
         launch_description_source=PythonLaunchDescriptionSource(
             os.path.join(
@@ -56,7 +56,45 @@ def generate_launch_description():
             'yaml_filename': LaunchConfiguration('map_filename')
         }.items()
     )
-    ld.add_action(amcl_and_map)
+    # ld.add_action(amcl_and_map)
+
+    ##########################################
+
+    # 不使用map文件和amcl进行定位,使用cartographer进行定位,包含cartographer的launch文件
+    # src/slam/sim_slam_cartographer/launch/sim_cartographer.launch.py
+    cartographer_node = IncludeLaunchDescription(
+        launch_description_source=PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory('sim_slam_cartographer'),
+                'launch',
+                'sim_cartographer.launch.py'
+            )
+        ),
+        launch_arguments={
+            'param_name': 'stage.lua',
+        }.items()
+    )
+    ld.add_action(cartographer_node)
+
+    # slam_toolbox
+    slam_toolbox_node = IncludeLaunchDescription(
+        launch_description_source=PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory('sim_slam_slam_toolbox'),
+                'launch',
+                'online_sync.launch.py'
+            )
+        ),
+        launch_arguments={
+            'use_sim_time': LaunchConfiguration('use_sim_time'),
+            # 'path_param': 'mapper_params_online_sync.yaml',
+        }.items()
+    )
+    # ld.add_action(slam_toolbox_node)
+
+
+
+    ##########################################
 
     # 包含导航launch
     nav2_pkg = get_package_share_directory('sim_navigation2')

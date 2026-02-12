@@ -10,7 +10,9 @@ from launch_ros.actions import Node
 
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-
+"""
+    该launch文件是启动仿真环境的示例文件
+"""
 
 def generate_launch_description():
 
@@ -31,6 +33,7 @@ def generate_launch_description():
 
     stage_world_configuration_arg = OpaqueFunction(function=stage_world_configuration)
 
+    # 导航总实现
     sim_local_launch = IncludeLaunchDescription(
         launch_description_source=PythonLaunchDescriptionSource(
             os.path.join(
