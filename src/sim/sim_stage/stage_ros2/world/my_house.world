@@ -64,7 +64,8 @@ my_block( pose [ 5 0 0 360 ] color "red" bitmap "maps/ghost.png")
 # 文件包含
 include "robot/mycar.inc"
 
-car_base_with_laser_camera(
+# car_base_with_laser_camera(
+car_base_with_laser(
   name "robot_0"
   color "red"
   pose [ -7 -7 0 45 ] 
