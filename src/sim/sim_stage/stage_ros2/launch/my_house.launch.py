@@ -51,7 +51,7 @@ def generate_launch_description():
             name='stage',
             parameters=[
                 {"world_file": [LaunchConfiguration('world_file')]},
-                {'enable_gui': False},#在word文件中去除了摄像头
+                # {'enable_gui': False},#在word文件中去除了摄像头
             ],
             remappings=[("/base_scan","/scan")]
     )
