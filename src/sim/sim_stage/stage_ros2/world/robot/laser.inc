@@ -7,6 +7,7 @@ define my_laser ranger
     fov 360.0               # 视角
     samples 720             # 采样数
     color_rgba [ 0 0 1 0.15 ] # 可视化光束颜色以及透明度
+    # topic "scan"       # 雷达数据发布的话题名称
   )
   model # 雷达外观
   (

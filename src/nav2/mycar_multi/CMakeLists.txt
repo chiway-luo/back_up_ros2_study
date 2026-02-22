@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(sim_navigation2)
+project(mycar_multi)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -7,16 +7,26 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-find_package(navigation2 REQUIRED)
+find_package(tf2_ros REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
 
-install(DIRECTORY launch bts params DESTINATION share/${PROJECT_NAME})
+add_executable(convoy src/convoy.cpp)
+target_include_directories(convoy PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+target_compile_features(convoy PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+ament_target_dependencies(
+  convoy
+  "tf2_ros"
+  "geometry_msgs"
+  "rclcpp"
+  "std_msgs"
+)
 
-# Also install multi launch files at the launch root so ros2 launch can find them.
-# install(FILES
-#   launch/multi/bringup_multi.launch.py
-#   launch/multi/nav2_multi.launch.py
-#   DESTINATION share/${PROJECT_NAME}/launch
-# )
+install(TARGETS convoy
+  DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

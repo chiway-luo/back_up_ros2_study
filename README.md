@@ -89,3 +89,8 @@ cartographer_occupancy_grid_node
 ```
 主要负责接收cartographer_node生成的子图列表(/submap_list)并将其拼接成完整的占用栅格地图(/map)
 ```
+
+## 多车编队启动
+```
+ros2 launch stage_ros2 sim_follow.launch.py 
+```

@@ -10,13 +10,15 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
+    ld = LaunchDescription()
 
     this_directory = get_package_share_directory('stage_ros2')
 
-    stage_world_arg = DeclareLaunchArgument(
+    ld.add_action(DeclareLaunchArgument(
         'world',
         default_value=TextSubstitution(text='my_house_multi'),
         description='World file relative to the project world file, without .world')
+    )
 
     def stage_world_configuration(context):
         file = os.path.join(
@@ -27,15 +29,18 @@ def generate_launch_description():
 
     stage_world_configuration_arg = OpaqueFunction(function=stage_world_configuration)
 
-    return LaunchDescription([
-        stage_world_arg,
-        stage_world_configuration_arg,
+    ld.add_action(stage_world_configuration_arg)
+    ld.add_action(
         Node(
             package='stage_ros2',
             executable='stage_ros2',
             name='stage',
             parameters=[{
                 "world_file": [LaunchConfiguration('world_file')]}],
-            remappings=[("/base_scan","/scan")]
+            remappings=[("base_scan", "scan")]
         )
-    ])
+    )
+
+    
+
+    return ld
