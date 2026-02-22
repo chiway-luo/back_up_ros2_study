@@ -39,4 +39,15 @@
     scan_topic: scan
     # 设置机器人的初始位姿
     set_initial_pose: true
-    
+    # initial_pose: 这个是与map重合的,不需要设置
+    #   x: -7.0
+    #   y: -7.0
+    #   z: 0.0
+    #   yaw: 1.5708  # 45 degrees in radians
+
+#     car_base_with_laser_camera(
+#   name "robot_0"
+#   color "red"
+#   pose [ -7 -7 0 45 ] 
+# )
+
