@@ -133,6 +133,18 @@ def generate_launch_description():
             )
         )
 
+    # 跟随实现
+    convoy_node = IncludeLaunchDescription(
+        launch_description_source=PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory('mycar_multi'),
+                'launch',
+                'convoy.launch.py'
+            )
+        )
+    )
+    ld.add_action(convoy_node)
+
 
 
 

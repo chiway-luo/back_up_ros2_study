@@ -67,13 +67,13 @@ include "robot/mycar.inc"
 car_base_with_laser_camera(
   name "robot_0"
   color "red"
-  pose [ -7 -7 0 45 ] 
+  pose [ -5 -5 0 0 ] 
 )
 
 car_base_with_laser_camera(
   name "robot_1"
   color "yellow"
-  pose [ -5 -5 0 0 ] 
+  pose [ -7 -7 0 45 ]
 )
 
 car_base_with_laser_camera(

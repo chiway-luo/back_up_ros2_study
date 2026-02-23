@@ -39,11 +39,11 @@
     scan_topic: scan
     # 设置机器人的初始位姿
     set_initial_pose: true
-    initial_pose:
-      x: 2.8284
+    initial_pose: #这个是与map重合的,不需要设置
+      x: 0.0
       y: 0.0
       z: 0.0
-      yaw: -0.7854  # -45 degrees in radians
+      yaw: 0.0
 
     #   x: -7.0 相对于初始位置来设置
     #   y: -7.0
