@@ -8,7 +8,7 @@
     min_velocity: [-0.26, 0.0, -1.0]
     max_accel: [2.5, 0.0, 3.2] # 最大加速度
     max_decel: [-2.5, 0.0, -3.2]
-    odom_topic: "odom" # odometry topic
+    odom_topic: "/robot_0/odom" # odometry topic
     odom_duration: 0.1
     deadband_velocity: [0.0, 0.0, 0.0]
     velocity_timeout: 1.0 # 如果在这个时间内没有收到新的速度指令,则认为速度为0

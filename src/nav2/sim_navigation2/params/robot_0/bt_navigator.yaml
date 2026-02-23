@@ -4,7 +4,7 @@ robot_0/bt_navigator:
     # use_sim_time: True
     global_frame: map
     robot_base_frame: robot_0/base_link
-    odom_topic: odom
+    odom_topic: robot_0/odom
     bt_loop_duration: 10
     default_server_timeout: 20
     wait_for_service_timeout: 1000
