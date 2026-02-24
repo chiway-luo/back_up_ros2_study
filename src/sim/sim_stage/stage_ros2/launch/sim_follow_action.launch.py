@@ -102,20 +102,22 @@ def generate_launch_description():
     )
     ld.add_action(sim_local_launch)
 
-    # 等待定位和地图服务就绪
+    # 等待定位节点进入 active
     wait_local_ready = ExecuteProcess(
         cmd=[
             'bash',
             '-c',
             (
                 'while true; do '
-                'nodes="$(ros2 node list 2>/dev/null || true)"; '
-                'if [[ "$nodes" == *"/robot_0/sim_amcl"* && '
-                '"$nodes" == *"/robot_1/sim_amcl"* && '
-                '"$nodes" == *"/robot_2/sim_amcl"* ]]; then '
+                's0="$(ros2 lifecycle get /robot_0/sim_amcl 2>/dev/null || true)"; '
+                's1="$(ros2 lifecycle get /robot_1/sim_amcl 2>/dev/null || true)"; '
+                's2="$(ros2 lifecycle get /robot_2/sim_amcl 2>/dev/null || true)"; '
+                'if [[ "$s0" == *"active"* && '
+                '"$s1" == *"active"* && '
+                '"$s2" == *"active"* ]]; then '
                 'break; '
                 'fi; '
-                'sleep 1; '
+                # 'sleep 1; '
                 'done'
             )
         ],
@@ -145,20 +147,26 @@ def generate_launch_description():
             )
         )
 
-    # 等待导航启动完成
+    # 等待导航 active + action server 就绪
     wait_nav_ready = ExecuteProcess(
         cmd=[
             'bash',
             '-c',
             (
                 'while true; do '
+                'b0="$(ros2 lifecycle get /robot_0/bt_navigator 2>/dev/null || true)"; '
+                'b1="$(ros2 lifecycle get /robot_1/bt_navigator 2>/dev/null || true)"; '
+                'b2="$(ros2 lifecycle get /robot_2/bt_navigator 2>/dev/null || true)"; '
                 'actions="$(ros2 action list 2>/dev/null || true)"; '
-                'if [[ "$actions" == *"/robot_0/navigate_to_pose"* && '
+                'if [[ "$b0" == *"active"* && '
+                '"$b1" == *"active"* && '
+                '"$b2" == *"active"* && '
+                '"$actions" == *"/robot_0/navigate_to_pose"* && '
                 '"$actions" == *"/robot_1/navigate_to_pose"* && '
                 '"$actions" == *"/robot_2/navigate_to_pose"* ]]; then '
                 'break; '
                 'fi; '
-                'sleep 1; '
+                # 'sleep 1; '
                 'done'
             )
         ],
@@ -171,7 +179,7 @@ def generate_launch_description():
             event_handler=OnProcessExit(
                 target_action=wait_local_ready,
                 on_exit=[
-                    LogInfo(msg='[sim_follow] localization is ready, starting nav2...'),
+                    LogInfo(msg='[sim_follow] 定位和地图服务准备就绪,正在启动导航...'),
                     *nav_launches,
                     wait_nav_ready
                 ]
@@ -197,7 +205,7 @@ def generate_launch_description():
             event_handler=OnProcessExit(
                 target_action=wait_nav_ready,
                 on_exit=[
-                    LogInfo(msg='[sim_follow] nav2 actions are ready, starting convoy...'),
+                    LogInfo(msg='[sim_follow] 导航服务准备就绪,正在启动跟随...'),
                     convoy_node
                 ]
             )
