@@ -19,8 +19,8 @@ sudo apt install ros-$ROS_DISTRO-navigation2
 sudo apt install ros-$ROS_DISTRO-nav2-bringup
 ```
 
-## 仿真案例启动
-- ign-gazbeo
+## 模块一 仿真案例启动
+- ign-gazebo
 ```
 ros2 launch demo_gazebo_sim gazebo_sim_car.launch.py 
 ```
@@ -36,7 +36,7 @@ ros2 launch demo_stage_sim sim.launch.py
 ros2 launch stage_ros2 my_house.launch.py 
 ```
 
-## 安装 slam_toolbox
+## 模块二 安装 slam_toolbox
 ```
 cd src/
 git clone https://github.com/SteveMacenski/slam_toolbox.git -b humble
@@ -70,7 +70,7 @@ ros2 pkg executables slam_toolbox
 
         slam_toolbox sync_slam_toolbox_node
 
-## 安装cartographer
+## 模块三 安装cartographer
 - 核心库
 ```
 sudo apt install ros-$ROS_DISTRO-cartographer     
@@ -90,7 +90,7 @@ cartographer_occupancy_grid_node
 主要负责接收cartographer_node生成的子图列表(/submap_list)并将其拼接成完整的占用栅格地图(/map)
 ```
 
-## 多车编队启动
+## 模块四 多车编队启动
 其中包含导航和跟随实现
 - 基础版
 ```
