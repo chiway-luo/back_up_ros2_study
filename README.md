@@ -92,6 +92,11 @@ cartographer_occupancy_grid_node
 
 ## 多车编队启动
 其中包含导航和跟随实现
+- 基础版
 ```
 ros2 launch stage_ros2 sim_follow.launch.py 
+```
+- 升级版(稳定启动)
+```
+ros2 launch stage_ros2 sim_follow_action.launch.py
 ```
