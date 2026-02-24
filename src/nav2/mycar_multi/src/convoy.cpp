@@ -34,6 +34,7 @@ public:
         this->declare_parameter("car_num","robot_1");
         this->declare_parameter("main_car_frame","robot_0/base_link");
         this->declare_parameter("goal_frame","robot_1/goal");
+        this->declare_parameter("map_frame","map");
         // this->declare_parameter("follow_car_frame","robot_1/base_link");
         this->declare_parameter("x_offset",1.0);
         this->declare_parameter("y_offset",0.0);
@@ -43,6 +44,7 @@ public:
         this->get_parameter("car_num",car_num);
         this->get_parameter("main_car_frame",main_car_frame);
         this->get_parameter("goal_frame",goal_frame);
+        this->get_parameter("map_frame",map_frame);
         // this->get_parameter("follow_car_frame",follow_car_frame);
         this->get_parameter("x_offset",x_offset);
         this->get_parameter("y_offset",y_offset);
@@ -76,6 +78,7 @@ private:
     std::string main_car_frame;//主车坐标系
     std::string goal_frame;//目标坐标系
     std::string follow_car_frame;//从车坐标系
+    std::string map_frame;//地图坐标系
     double x_offset;//x轴偏移
     double y_offset;//y轴偏移
     double yaw_offset;//yaw偏移
@@ -114,7 +117,7 @@ private:
         //获取目标坐标系相对于从车坐标系的变换
         try
         {
-            *this->transformStamped = tf_buffer_->lookupTransform("map", this->goal_frame, tf2::TimePointZero);
+            *this->transformStamped = tf_buffer_->lookupTransform(this->map_frame, this->goal_frame, tf2::TimePointZero);
         }
         catch(const std::exception& e)
         {
@@ -122,7 +125,7 @@ private:
             return;
         }
         goal_msg_->header.stamp = this->get_clock()->now();
-        goal_msg_->header.frame_id = "map";
+        goal_msg_->header.frame_id = this->map_frame;
         goal_msg_->pose.position.x = this->transformStamped->transform.translation.x;
         goal_msg_->pose.position.y = this->transformStamped->transform.translation.y;
         goal_msg_->pose.position.z = this->transformStamped->transform.translation.z;

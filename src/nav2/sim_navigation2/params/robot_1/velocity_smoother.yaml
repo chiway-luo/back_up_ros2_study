@@ -3,8 +3,8 @@ robot_1/velocity_smoother:
     smoothing_frequency: 20.0
     scale_velocities: False
     feedback: "OPEN_LOOP"
-    max_velocity: [0.26, 0.0, 1.0] # x y pitch  默认速度是0.26
-    min_velocity: [-0.26, 0.0, -1.0]
+    max_velocity: [0.8, 0.0, 1.0] # x y pitch  默认速度是0.26
+    min_velocity: [-0.8, 0.0, -1.0]
     max_accel: [2.5, 0.0, 3.2] # 最大加速度
     max_decel: [-2.5, 0.0, -3.2]
     odom_topic: "/robot_1/odom" # odometry topic
