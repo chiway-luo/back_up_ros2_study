@@ -297,7 +297,7 @@ int main(int argc, char *argv[])
   auto node = std::make_shared<rclcpp::Node>("v2t_node");
 
   // 注意此处参数 appid 的设置,需要根据自己应用的 appid 自行修改
-  node->declare_parameter("appid","d7389bad");
+  node->declare_parameter("appid","66a19765");
 
   auto voiceWordsPub = node->create_publisher<std_msgs::msg::String>("voicewords", 10);
 

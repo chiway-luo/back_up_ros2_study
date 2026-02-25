@@ -26,7 +26,7 @@ find_package(geometry_msgs REQUIRED)
 # install(TARGETS v2t
 #   DESTINATION lib/${PROJECT_NAME})
 
-#添加内容
+#语音转文字
 
 add_executable(v2t src/v2t.cpp src/speech_recognizer.c src/linuxrec.c)
 
@@ -55,6 +55,27 @@ install(
 
 
 ############
+
+# 文字转语音
+add_executable(t2v src/t2v.cpp)
+target_include_directories(t2v PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+ament_target_dependencies(
+  t2v
+  "rclcpp"
+  "std_msgs"
+  "geometry_msgs"
+)
+target_link_libraries(t2v
+  ${catkin_LIBRARIES}
+  libmsc.so -ldl -pthread 
+)
+install(TARGETS t2v
+  DESTINATION lib/${PROJECT_NAME})
+
+
+###########
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
