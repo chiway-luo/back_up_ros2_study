@@ -1,0 +1,80 @@
+# 全局参数
+interval_sim              100           #仿真环境更新的步长值(毫秒)
+quit_time                 0             #仿真环境运行时间(毫秒),0表示无限运行
+resolution                0.02          #一个像素对应的长度(米)
+show_clock                0             #是否显示仿真时间
+show_clock_interval       100           #仿真时间显示的更新步长(毫秒)
+threads                   0             #仿真环境使用的线程数,0表示自动选择
+
+# 窗体参数
+window
+(
+  size [ 600.000 600.000 ] # 窗体尺寸(以 像素 为单位)
+  scale 35  # 缩放比
+  center [ 0  0 ] # 地图相对于窗体的偏移量(以 米 为单位)
+  rotate [ 0  0 ] # 地图旋转角度
+
+  show_data 1     # 是否显示传感器数据 1=on 0=off
+)
+
+
+# 地图参数
+define floorplan model(
+  color "grey60"  # 颜色
+  boundary 1  # 为地图设置边框
+
+  gui_nose 0
+  gui_grid 0 
+
+  gui_outline 0
+  gripper_return 0
+  fiducial_return 0
+  laser_return 1 # 激光雷达返回值 1 = on 0 = off
+)
+
+# 加载地图
+floorplan
+( 
+  name "room"
+  size [16.000 16.000 5.000]
+  pose [0 0 0 0]
+  bitmap "maps/uoa_robotics_lab.png"
+  gui_move 0 #不能移动
+)
+
+
+# 障碍物参数
+# 基本模型的使用语法
+#方式1: 直接调用模型对象
+model( pose [ -2 -4 0 0 ] color "green" )
+
+#方式2: 自定义模型对象,然后调用
+define my_model model(
+  size [2 2 2]
+  color "red"
+)
+
+my_model( pose [ 2 5 0 0 ] bitmap "maps/ghost.png" )
+my_model( pose [ 0 0 0 15 ] bitmap "maps/space_invader.png" )
+
+# 机器人参数
+# --- 底盘
+
+# --- 激光雷达
+
+# --- 摄像头
+
+# 生成机器人模型
+include "robot/mycar.inc"
+
+my_car( #单个机器人没有命名空间
+  name "robot_0"
+  color "green"
+  pose [ -5 -6 0 0 ] 
+)
+
+# my_car(  #自动添加命名空间 robot_1
+#   name "robot_1"
+#   color "green"
+#   pose [ -5 -2 0 0 ] 
+# )
