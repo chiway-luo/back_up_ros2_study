@@ -8,8 +8,11 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(tf2 REQUIRED)
+find_package(nav2_msgs REQUIRED)
 
 add_executable(voice_control src/voice_control.cpp)
 target_include_directories(voice_control PUBLIC
@@ -19,8 +22,11 @@ target_compile_features(voice_control PUBLIC c_std_99 cxx_std_17)  # Require C99
 ament_target_dependencies(
   voice_control
   "rclcpp"
+  "rclcpp_action"
   "std_msgs"
+  "tf2"
   "geometry_msgs"
+  "nav2_msgs"
 )
 
 install(TARGETS voice_control

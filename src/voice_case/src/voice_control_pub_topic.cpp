@@ -1,17 +1,13 @@
 #include "rclcpp/rclcpp.hpp"
-#include "rclcpp_action/rclcpp_action.hpp"
 #include "geometry_msgs/msg/twist.hpp" //速度消息
 #include "std_msgs/msg/string.hpp" //字符串消息
 
-#include "nav2_msgs/action/navigate_to_pose.hpp"
-
 #include "tf2/LinearMath/Quaternion.h" //欧拉转四元数
 
-#include "geometry_msgs/msg/pose_stamped.hpp" //导航消息
+#include "geometry_msgs/msg/pose_stamped.hpp" //导航消息  geometry_msgs/msg/PoseStamped /goal_pose
 
 
 /*
-    改进后的版本,通过发送导航action请求来实现导航功能,并且增加了取消导航的功能
     需求:通过语音控制机器人
             需要调用者下达语音指令,可以控制机器人运动,并且机器人会播报接受指令后即将进入的运动状态
               ps: "前进"
@@ -45,10 +41,8 @@ public:
         pub_twist_ = this->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel",10);
         // 3-2创建定时器,定时发布速度指令
         timer_ = this->create_wall_timer(50ms,std::bind(&VoiceControl::pub_twist,this));
-
-        // 3-3创建导航 action 客户端
-        nav_action_client_ = rclcpp_action::create_client<NavigateToPose>(this, "/navigate_to_pose");
-
+        // 3-3创建导航消息发布方
+        pub_pose_ = this->create_publisher<geometry_msgs::msg::PoseStamped>("/goal_pose",10);
         // 3-4创建发布方,订阅到语音指令的文本时,生成消息即将进入的状态,发布给消息语音合成节点
         pub_str_ = this->create_publisher<std_msgs::msg::String>("/ttswords",10);
 
@@ -66,17 +60,11 @@ public:
     }
 
 private:
-    using NavigateToPose = nav2_msgs::action::NavigateToPose;
-    using GoalHandleNavigateToPose = rclcpp_action::ClientGoalHandle<NavigateToPose>;
-
     rclcpp::Subscription<std_msgs::msg::String>::SharedPtr sub_str_; //字符串消息接收方
     rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr pub_twist_; //速度消息发布方
+    rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr pub_pose_; //导航消息发布方
     rclcpp::Publisher<std_msgs::msg::String>::SharedPtr pub_str_; //字符串消息发布方-->语音合成模块
     rclcpp::TimerBase::SharedPtr timer_; //定时发布速度指令
-
-    rclcpp_action::Client<NavigateToPose>::SharedPtr nav_action_client_;//导航客户端
-    GoalHandleNavigateToPose::SharedPtr current_goal_handle_;//导航目标句柄,用于发送取消导航请求
-    bool navigation_active_ = false;//导航状态标志
 
     //创建消息对象(减少内存占用,增加性能)
     std::shared_ptr<geometry_msgs::msg::Twist> twist_msg_;
@@ -91,70 +79,6 @@ private:
         twist_msg_->linear.x = 0.0;
         twist_msg_->angular.z = 0.0;
         pub_twist_->publish(*twist_msg_);
-    }
-
-    //取消导航的函数,如果当前没有导航任务,则发布提示消息;如果有导航任务,则发送取消请求,并在回调函数中更新导航状态和发布提示消息
-    void cancel_navigation(){
-        if (!navigation_active_ || !current_goal_handle_)//如当前没有导航任务 或者 导航的句柄无效(可能已经完成),则发布提示消息
-        {
-            str_msg_->data = "当前没有可取消的导航任务";
-            pub_str_->publish(*str_msg_);
-            return;
-        }
-
-        auto cancel_future = nav_action_client_->async_cancel_goal(
-            current_goal_handle_,
-            //取消请求的回调函数
-            [this](auto)
-            {
-                navigation_active_ = false;
-                current_goal_handle_.reset();
-                str_msg_->data = "已发送取消导航请求";
-                pub_str_->publish(*str_msg_);
-            });
-        (void)cancel_future;
-    }
-
-    //发送导航请求的函数,如果导航服务器未就绪,则发布提示消息;如果就绪,则发送导航目标请求,并在回调函数中处理响应和结果
-    void send_navigation_goal(const geometry_msgs::msg::PoseStamped & target_pose){
-        if (!nav_action_client_->wait_for_action_server(1s))
-        {
-            str_msg_->data = "导航服务未就绪,请稍后再试";
-            pub_str_->publish(*str_msg_);
-            return;
-        }
-
-        NavigateToPose::Goal goal;//导航目标消息
-        goal.pose = target_pose;//设置导航目标位姿
-
-        auto send_goal_options = rclcpp_action::Client<NavigateToPose>::SendGoalOptions();//导航目标发送选项
-
-        //发送导航目标后的响应回调函数
-        send_goal_options.goal_response_callback = 
-        [this](GoalHandleNavigateToPose::SharedPtr goal_handle) 
-            {
-                if (!goal_handle)
-                {
-                    navigation_active_ = false;
-                    current_goal_handle_.reset();
-                    str_msg_->data = "导航目标被拒绝";
-                    pub_str_->publish(*str_msg_);
-                    return;
-                }
-                current_goal_handle_ = goal_handle;//保存当前目标句柄,以便后续取消导航
-                navigation_active_ = true;
-            };
-        //导航过程中反馈回调函数(可选,这里不处理反馈)
-
-        //导航完成后的回调函数,无论成功还是失败都将导航状态标志设为false,并且重置目标句柄
-        send_goal_options.result_callback =
-            [this](const GoalHandleNavigateToPose::WrappedResult &)
-            {
-                navigation_active_ = false;//代表当前导航请求已经完成(无论成功还是失败)
-                current_goal_handle_.reset();
-            };
-
-        nav_action_client_->async_send_goal(goal, send_goal_options);
     }
 
 
@@ -174,7 +98,6 @@ private:
         }
         else if (str_->find("停止") != std::string::npos)
         {
-            cancel_navigation();
             str_msg_->data = "小车停止运动";
             pub_str_->publish(*str_msg_);
             return;
@@ -262,10 +185,12 @@ void VoiceControl::make_pose(){
     //判断导航点 分为 5个点:绿色障碍物上方 海怪左边 小狗下方 王乐家上方 王乐家下方 王乐家左边 金库上方
     if (str_->find("停止") != std::string::npos)
     {
-        cancel_navigation();
-        str_msg_->data = "小车停止导航";
-        pub_str_->publish(*str_msg_);
-        return;
+        //获取当前小车位置
+
+        //由于没有获取当前位置信息的接口,所以暂时无法实现停止功能,只能让小车停在当前位置,不发布导航消息
+
+        //生成消息
+        str_msg_->data = "小车无法在导航过程中停止";
     }
     else if (str_->find("绿色障碍物") != std::string::npos)
     {
@@ -428,7 +353,7 @@ void VoiceControl::make_pose(){
     pose_msg_->pose.orientation.z = qt.z();
     pose_msg_->pose.orientation.w = qt.w();
     pose_msg_->header.stamp = this->get_clock()->now();
-    send_navigation_goal(*pose_msg_);
+    pub_pose_->publish(*pose_msg_);
     pub_str_->publish(*str_msg_);
     return;
 }
