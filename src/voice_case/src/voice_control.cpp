@@ -102,14 +102,15 @@ private:
             return;
         }
 
+        str_msg_->data = "已发送取消导航请求";
+        pub_str_->publish(*str_msg_);
+
         auto cancel_future = nav_action_client_->async_cancel_goal(
             current_goal_handle_,
             //取消请求的回调函数
             [this](auto)
             {
-                navigation_active_ = false;
-                current_goal_handle_.reset();
-                str_msg_->data = "已发送取消导航请求";
+                str_msg_->data = "取消请求已提交";
                 pub_str_->publish(*str_msg_);
             });
         (void)cancel_future;
@@ -148,10 +149,24 @@ private:
 
         //导航完成后的回调函数,无论成功还是失败都将导航状态标志设为false,并且重置目标句柄
         send_goal_options.result_callback =
-            [this](const GoalHandleNavigateToPose::WrappedResult &)
+            [this](const GoalHandleNavigateToPose::WrappedResult & result)
             {
                 navigation_active_ = false;//代表当前导航请求已经完成(无论成功还是失败)
                 current_goal_handle_.reset();
+
+                if (result.code == rclcpp_action::ResultCode::CANCELED)
+                {
+                    str_msg_->data = "导航已取消";
+                }
+                else if (result.code == rclcpp_action::ResultCode::SUCCEEDED)
+                {
+                    str_msg_->data = "导航已到达目标点";
+                }
+                else
+                {
+                    str_msg_->data = "导航结束(非取消)";
+                }
+                pub_str_->publish(*str_msg_);
             };
 
         nav_action_client_->async_send_goal(goal, send_goal_options);
@@ -175,8 +190,6 @@ private:
         else if (str_->find("停止") != std::string::npos)
         {
             cancel_navigation();
-            str_msg_->data = "小车停止运动";
-            pub_str_->publish(*str_msg_);
             return;
         }
         
