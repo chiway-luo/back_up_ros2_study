@@ -11,6 +11,7 @@ find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
 add_executable(talker_str src/talker_str.cpp)
+add_executable(talker_num src/talker_num.cpp)
 target_include_directories(talker_str PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
@@ -20,8 +21,13 @@ ament_target_dependencies(
   "rclcpp"
   "std_msgs"
 )
+ament_target_dependencies(
+  talker_num
+  "rclcpp"
+  "std_msgs"
+)
 
-install(TARGETS talker_str
+install(TARGETS talker_str talker_num
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)

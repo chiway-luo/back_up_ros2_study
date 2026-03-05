@@ -11,6 +11,7 @@ find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
 add_executable(listener_str_topic_sta src/listener_str_topic_sta.cpp)
+add_executable(listener_num_filter src/listener_num_filter.cpp)
 target_include_directories(listener_str_topic_sta PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
@@ -21,7 +22,13 @@ ament_target_dependencies(
   "std_msgs"
 )
 
-install(TARGETS listener_str_topic_sta
+ament_target_dependencies(
+  listener_num_filter
+  "rclcpp"
+  "std_msgs"
+)
+
+install(TARGETS listener_str_topic_sta listener_num_filter
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
