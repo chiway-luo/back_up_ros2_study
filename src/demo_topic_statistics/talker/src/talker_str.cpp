@@ -12,7 +12,7 @@
         4.调用spin函数，并传入节点指针
         5.释放资源
 */
-using namespace std::chrono_literals;//使用命名空间 方便使用时间单位
+using namespace std::chrono_literals;
 
 class Talker_sdy:public rclcpp::Node{
     public:
