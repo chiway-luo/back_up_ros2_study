@@ -1,0 +1,4 @@
+<library path="planner_clean">
+    <class type="planner_clean::PlannerClean" base_class_type="nav_planner::BasePlanner">
+    </class>
+</library>
