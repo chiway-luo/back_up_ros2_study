@@ -1,0 +1,8 @@
+<!-- 插件的描述文件 -->
+<library path="planner_sample">
+    <class type="planner_sample::SamplePlanner" base_class_type="nav_planner::BasePlanner">
+        <description>
+            这是一个示例路径规划器插件，展示了如何实现一个简单的路径规划算法。
+        </description>
+    </class>
+</library>

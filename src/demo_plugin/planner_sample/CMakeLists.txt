@@ -40,6 +40,9 @@ install(
   RUNTIME DESTINATION bin
 )
 
+#发现并加载插件的配置文件 基类所属的功能包  插件的描述文件
+pluginlib_export_plugin_description_file(nav_planner plugins.xml)
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights
